@@ -123,7 +123,7 @@ namespace _01__Console
 
 
 
-            Console.WriteLine("현재 경험치는" + exp + " 입니다!\n");
+            Console.WriteLine("현재 경험치는 " + exp + " 입니다!\n");
             Console.WriteLine("경험치를 추가합니다.");
             Console.Write("추가할 경험치 : "); // 이전의 exp 값이 안 덮여 쓰도록 이전 값의 저장할 수 있도록
                                          // 변수를 새로 만들어준다
@@ -137,7 +137,7 @@ namespace _01__Console
             }
             else
             {
-                Console.WriteLine("현제 경험치는" + exp + " 입니다!");
+                Console.WriteLine($"현재 경험치는 : {exp} "); // 변수 들어가는거 출력할려면 앞에다 $ 써줘야된다. 
 
             }
 
