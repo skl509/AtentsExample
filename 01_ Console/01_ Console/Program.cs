@@ -199,7 +199,7 @@ namespace _01__Console
                 exp = exp + floatTemp2;
             }
             while (exp < 1);
-            Console.WriteLine("레벨업!");
+            Console.WriteLine("레벨업!");3
 
             Console.ReadKey(); // 키 입력 대기코드
         }
