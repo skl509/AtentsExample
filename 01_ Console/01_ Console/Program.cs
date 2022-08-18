@@ -1,30 +1,64 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace _01__Console
 {
     internal class Program
     {
+        // 스코프(Scope) : 변수나 함수를 사용할 수 있는 범위. 변수를 선언한 지점에서 해당 변수가 중괄호가 끝나는 구간 까지
         static void Main(string[] args)
         {
-            int sumResult = Sum(10, 20); // break point(단축키 F9) , f10, f11 도 요긴하다 디버깅 기능
-            Console.WriteLine($"SumResult : {sumResult}");
+            //int sumResult = Sum(10, 20); // break point(단축키 F9) , f10, f11 도 요긴하다 디버깅 기능
+            //Console.WriteLine($"SumResult : {sumResult}");
 
-            Print();
+            //Print();
+            //Test_Function();
 
-            string name = "너굴맨";
+            //실습 
+            //1. int 타입의 파라메터를 하나 받아서 그 숫자에 해당하는 구구단을 출력해주는 함수 만들기
+            //2. 1번에서 만드는 함수는 2~9까지 입력이 들어오면 해당 구구단 출력, 그 외 숫자는 "잘못된 입력입니다" 라고 출력해야된다.
+            //3. 메인 함수에서 입력받는 코드가 따로 있어야한다.
+            int n = 0;
+
+            Console.Write("2~9사이 중 한 숫자를 입력해 주세요 : ");
+            string temp = Console.ReadLine();
+            int.TryParse(temp, out n);
+            Multfly(n);
+
+            Console.ReadKey(); // 키 입력 대기코드
+        }
+
+        private static void Multfly(int n)
+        {
+
+            if (1 < n && n < 10)
+            {
+                for (int i = 1; i < 10; i++)
+                {
+                    Console.WriteLine($"{n} * {i} = {n * i} ");
+
+                }
+            }
+            else
+                Console.WriteLine("올바른 숫자를 입력하세요");
+        }
+
+        private static void Test_Function()
+        {
+            string name2 = "너굴맨";
             int level = 2;
             int hp = 10;
             int maxHP = 20;
             float exp = 0.1f;
             float maxExp = 1.0f;
 
-            PrintCharacter("너굴맨",3,4,5,10,11);
-
-            Console.ReadKey(); // 키 입력 대기코드
+            PrintCharacter(name2, 3, 4, 5, 10, 11); // 변수 name2 / name 이 다르다... 변수 스코프가 달라서
+                                                    // 그러나 동일하게 매개변수 받아 처리가능 
         }
 
         private static void PrintCharacter(string name, int level, int hp, int maxHP, float exp, float maxExp)
@@ -35,10 +69,10 @@ namespace _01__Console
             int c = maxHP;
             float A = exp;
             float B = maxExp;
-            Console.WriteLine($"{result}\n{a}\n{b}\n{c}\n{A}\n{B}");
+            Console.WriteLine($"이름 : {result}\n레벨 : {a}\n체력 : {b}\n최대체력 : {c}\n경험치 : {A:f3}\n최대 경험치 : {B:f3}");
             //실습 파라메터로 받은 데이터를 적당한 양식으로 출력해 주는 함수 완성하기
         }
-        //함수의 기본 요소
+        //함수의 기본 요소 -> 함수는 특정 기능을 하도록 하는 코드덩어리
         //이름 : 함수들을 구분하기 위한 이름 (예제의 Sum)
         //리턴타입 : 함수의 실행 결과로 돌려주는 데이터의 타입(int, 함수의 이름앞에 표시된다.)
         //파라메터(매개변수) : 함수가 실행 될 때 외부에서 받는 값 (int a, int b 두개의 파라매터가 있다.)
