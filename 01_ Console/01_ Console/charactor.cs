@@ -49,15 +49,15 @@ namespace _01__Console
 
                 }
                 if (hp <= 0)
-                { 
-                 // 사망처리용 함수 호출
+                {
+                    Console.WriteLine($"{name}이 죽었습니다.");
                 }            }
         }
 
         public Charactor()
         {
 
-            Console.WriteLine("생성자 호출");
+           // Console.WriteLine("생성자 호출");
             rand = new Random();
             int randomNumber = rand.Next();
             randomNumber %= 5;
@@ -84,21 +84,36 @@ namespace _01__Console
         public Charactor(string newName)
         {
             Console.WriteLine($"생성자 호출 - {newName}");
-          
-
+            rand = new Random();
+            name = newName;
+            GenerateStatus();
+            TestPrintStatus();
+            
         }
 
-      
 
+        private void GenerateStatus()
+        {
+           
+            maxHP = rand.Next(100, 201);
+            hp = maxHP;
+
+            strenth = rand.Next(20) + 1; // 1~20사이를 랜덤하게 선택 , (20) -> 1~19 까지 랜덤 
+            dexteriy = rand.Next(20) + 1;
+            intellegence = rand.Next(20) + 1;
+
+        }
         //멤버 함수 -> 이 클래스가 가지는 기능
-        public void Attack()
-        { 
-        
+        public void Attack(Charactor target)
+        {
+            int damage = strenth;
+            target.TakeDamage(damage);
+            Console.WriteLine($"{name}이 {target.name}에게 {damage}만큼의 공격을 합니다.({damage})");
         }
-        public void TakeDamage()
-        { 
-        
-        
+        public void TakeDamage(int damage)
+        {
+            HP -= damage;
+            Console.WriteLine($"{name}이 {damage}만큼의 피해를 입었습니다.");
         }
 
         public void TestPrintStatus()

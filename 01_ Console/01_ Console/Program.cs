@@ -34,15 +34,37 @@ namespace _01__Console
             //% 연산의 결과는 항상 0~ 뒤 숫자 - 1 로 나온다.
 
 
-           
-           
+
+
 
             Charactor human1 = new Charactor();//클래스에 대해서 메모리 할당 완료(Instance화), 객체(Object) 생성완료
             Charactor human2 = new Charactor("개굴맨");// charactor 타입으로 하나 더 만드는 것, human 1과 human 2 는 서로 다른 개체이다.
                                                     // 생성자 로 변수 호출
-            Console.WriteLine($"{human1.HP}");
+
+            human1.Attack(human2);
+            human1.TestPrintStatus();
+            human2.TestPrintStatus();
+            human2.Attack(human1);
+            human1.TestPrintStatus();
+            human2.TestPrintStatus();
+
+
+            while (human2.HP <= 0 || human1.HP <= 0)
+            {
+                human1.Attack(human2);
+                human1.TestPrintStatus();
+                human2.TestPrintStatus();
+                human2.Attack(human1);
+                human1.TestPrintStatus();
+                human2.TestPrintStatus();
+            }
+            Console.WriteLine("누군가가 사망하였습니다.");
+
+
+
+            // Console.WriteLine($"{human1.HP}");
             //human1.HP = 20;
-            
+
             Console.ReadKey(); // 키 입력 대기코드
         }
 
