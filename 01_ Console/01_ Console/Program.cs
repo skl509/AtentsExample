@@ -30,13 +30,38 @@ namespace _01__Console
             int.TryParse(temp, out n);
             Multfly(n);
 
+
+
+            // 가위바위보 만들기! % 나머지 이용해서 -> 3으로 나눠줘서 0,1,2 값만 나오도록
+            Random r = new Random();
+            r.Next();
+            Console.Write(r.Next()%3);
+            
+            string A; // 가위 -> 1
+            string B; // 바위 -> 2
+            string C; // 보 - > 3
+
+
+
+
+
+
             Console.ReadKey(); // 키 입력 대기코드
         }
+
+       
+
+
+
+
+
+
+
 
         private static void Multfly(int n)
         {
 
-            if (1 < n && n < 10)
+            if (1 < n && n < 10) // 논리 연산자 and
             {
                 for (int i = 1; i < 10; i++)
                 {
