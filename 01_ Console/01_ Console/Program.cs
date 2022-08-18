@@ -23,6 +23,21 @@ namespace _01__Console
             //1. int 타입의 파라메터를 하나 받아서 그 숫자에 해당하는 구구단을 출력해주는 함수 만들기
             //2. 1번에서 만드는 함수는 2~9까지 입력이 들어오면 해당 구구단 출력, 그 외 숫자는 "잘못된 입력입니다" 라고 출력해야된다.
             //3. 메인 함수에서 입력받는 코드가 따로 있어야한다.
+            // TESTGUGUDAN();
+
+            Charactor human1 = new Charactor();// 메모리 할당 완료(Instance화), 객체(Object) 생성완료
+            Charactor human2 = new Charactor("개굴맨");// charactor 타입으로 하나 더 만드는 것, human 1과 human 2 는 서로 다른 개체이다.
+
+            
+
+            human1.TestPrintStatus();
+            human2.Attack();
+
+            Console.ReadKey(); // 키 입력 대기코드
+        }
+
+        private static void TESTGUGUDAN()
+        {
             int n = 0;
 
             Console.Write("2~9사이 중 한 숫자를 입력해 주세요 : ");
@@ -32,24 +47,11 @@ namespace _01__Console
 
 
 
-            // 가위바위보 만들기! % 나머지 이용해서 -> 3으로 나눠줘서 0,1,2 값만 나오도록
-            Random r = new Random();
-            r.Next();
-            Console.Write(r.Next()%3);
-            
-            string A; // 가위 -> 1
-            string B; // 바위 -> 2
-            string C; // 보 - > 3
-
-
-
-
 
 
             Console.ReadKey(); // 키 입력 대기코드
         }
 
-       
 
 
 
