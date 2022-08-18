@@ -22,21 +22,73 @@ namespace _01__Console
     private string name;
     private int hp = 100;
     private int maxHP = 100;
-    private int strenth = 10;
-    private int dexteriy = 5;
-    private int intellegence = 7;
+    private int strenth = 0;
+    private int dexteriy = 0;
+    private int intellegence = 0;
+
+
+        // 배열 : 같은 종류의 데이터 타입을 
+        //int[] intArray; // 인티저를 여러개 가질 수 있는 배열
+        //intArray = new int[5]; // 인티저를 5개 가질 수 있도록 할당
+
+        string[] nameArray = { "너굴맨", "개굴맨", "벡터맨", "샥샥맨", "사슴맨" }; // nameArray에 기본값 설정(선언과 할당을 동시에)
+        Random rand;
+        
+        public int HP // 프로퍼티 get/set 이용
+        {
+            get // 이프로퍼티를 읽을 때 호출되는 부분
+            {
+                return hp;
+            }
+            private set // 이 프로퍼티에 값을 넣을 때 호출되는 부분
+            {
+                hp = value;
+                if (hp > maxHP)
+                {
+                    hp = maxHP;
+
+                }
+                if (hp <= 0)
+                { 
+                 // 사망처리용 함수 호출
+                }            }
+        }
 
         public Charactor()
         {
+
             Console.WriteLine("생성자 호출");
-            name = "너굴맨";
+            rand = new Random();
+            int randomNumber = rand.Next();
+            randomNumber %= 5;
+            name = nameArray[randomNumber];
+
+            maxHP = rand.Next(100, 201);
+            hp = maxHP;
+
+            strenth = rand.Next(20) + 1; // 1~20사이를 랜덤하게 선택 , (20) -> 1~19 까지 랜덤 
+            dexteriy = rand.Next(20) + 1;
+            intellegence = rand.Next(20) + 1;
+
+            TestPrintStatus();
+            //실습
+            //1. 이름이 nameArray에 들어 있는 것 중 하나로 랜덤하게 선택된다.
+            //2. maxHP는 100~200 사이로 랜덤하게 선택된다.
+            //3. hp는 maxHP와 같은 값이다.
+            //4. strenth, dexterity, intellegence은 1~20 사이로 랜덤하게 정해진다.
+            //5. TestPrintStatus 함수를 이용해서 최종 상태를 출력한다.
+            //시간 : 1시 20분
+
         }
 
         public Charactor(string newName)
         {
             Console.WriteLine($"생성자 호출 - {newName}");
-            name = newName;
+          
+
         }
+
+      
 
         //멤버 함수 -> 이 클래스가 가지는 기능
         public void Attack()
@@ -49,10 +101,15 @@ namespace _01__Console
         
         }
 
-        public void TestPrintStatus() 
+        public void TestPrintStatus()
         {
-        
-        
+            Console.WriteLine("┌─────────────────┐");
+            Console.WriteLine($"이름\t: {name}");
+            Console.WriteLine($"HP\t: {hp} / {maxHP}");
+            Console.WriteLine($"힘\t: {strenth,2}");
+            Console.WriteLine($"민첩\t: {dexteriy,2}");
+            Console.WriteLine($"지능\t: {intellegence,2}");
+            Console.WriteLine("└─────────────────┘");
         }
     }
 

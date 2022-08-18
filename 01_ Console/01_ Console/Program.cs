@@ -25,14 +25,24 @@ namespace _01__Console
             //3. 메인 함수에서 입력받는 코드가 따로 있어야한다.
             // TESTGUGUDAN();
 
-            Charactor human1 = new Charactor();// 메모리 할당 완료(Instance화), 객체(Object) 생성완료
+
+
+
+
+            //% = 앞에 숫자를 뒤의 숫자로 나눈 나머지값을 돌려주는 연산자. (모듈레이트 연산, 나머지 연산)
+            //10 % 3 하면 결과는 1
+            //% 연산의 결과는 항상 0~ 뒤 숫자 - 1 로 나온다.
+
+
+           
+           
+
+            Charactor human1 = new Charactor();//클래스에 대해서 메모리 할당 완료(Instance화), 객체(Object) 생성완료
             Charactor human2 = new Charactor("개굴맨");// charactor 타입으로 하나 더 만드는 것, human 1과 human 2 는 서로 다른 개체이다.
-
+                                                    // 생성자 로 변수 호출
+            Console.WriteLine($"{human1.HP}");
+            //human1.HP = 20;
             
-
-            human1.TestPrintStatus();
-            human2.Attack();
-
             Console.ReadKey(); // 키 입력 대기코드
         }
 
