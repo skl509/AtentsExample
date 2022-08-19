@@ -18,7 +18,7 @@ namespace _01__Console
 
             //Print();
             //Test_Function();
-
+            //Test_Charctor();
             //실습 
             //1. int 타입의 파라메터를 하나 받아서 그 숫자에 해당하는 구구단을 출력해주는 함수 만들기
             //2. 1번에서 만드는 함수는 2~9까지 입력이 들어오면 해당 구구단 출력, 그 외 숫자는 "잘못된 입력입니다" 라고 출력해야된다.
@@ -35,38 +35,54 @@ namespace _01__Console
 
 
 
+            // Human h1 = new Human();
+            // Charactor c1 = h1; // 상속받은 클래스는 부모 클래스 타입으로 저장할 수 있다.
+            // c1.TestPrintStatus(); // charactor 의TestPrintStatus(); 가 출력(가상 함수가 아니라서)
+            //c1.GenerateStatus(); // Human의 GenerateStatus(); 가 호출된다. (가상함수이기 때문에)
 
-
-            Charactor human1 = new Charactor();//클래스에 대해서 메모리 할당 완료(Instance화), 객체(Object) 생성완료
-            Charactor human2 = new Charactor("개굴맨");// charactor 타입으로 하나 더 만드는 것, human 1과 human 2 는 서로 다른 개체이다.
-                                                    // 생성자 로 변수 호출
-
-            human1.Attack(human2);
-            human1.TestPrintStatus();
-            human2.TestPrintStatus();
-            human2.Attack(human1);
-            human1.TestPrintStatus();
-            human2.TestPrintStatus();
-
-
-            while (human2.HP <= 0 || human1.HP <= 0)
-            {
-                human1.Attack(human2);
-                human1.TestPrintStatus();
-                human2.TestPrintStatus();
-                human2.Attack(human1);
-                human1.TestPrintStatus();
-                human2.TestPrintStatus();
-            }
-            Console.WriteLine("누군가가 사망하였습니다.");
-
+            // 실습
+            //1. Human의 TestPrintStatus 함수를 오버라이드 하라.(mp 출력위해서) -> 원래기능 함수를 다른 함수로 바꾸는 것
+            //2. Human의 Attack 함수를 오버라이드 하라
+            //    ㄴ공격을 attack 을 할때 30%의 확률로 치명타가 터지도록 해라(치명타는 대미지 2배)
 
 
             // Console.WriteLine($"{human1.HP}");
             //human1.HP = 20;
 
+
+           
+            Test_Charctor();
             Console.ReadKey(); // 키 입력 대기코드
         }
+
+        private static void Test_Charctor()
+        {
+            Human human1 = new Human();
+            Human human2 = new Human();
+
+
+            //클래스에 대해서 메모리 할당 완료(Instance화), 객체(Object) 생성완료
+            // charactor 타입으로 하나 더 만드는 것, human 1과 human 2 는 서로 다른 개체이다.
+            // 생성자 로 변수 호출
+
+
+
+            while (!human1.IsDead && !human2.IsDead) //bool 타입으로 해주면 while 이용 용이, human1이 살아있고 human2 도 살아있다
+            {
+                human1.Attack(human2);
+                human1.TestPrintStatus();
+                human2.TestPrintStatus();
+                if (human2.IsDead)
+                {
+                    break;
+                }
+                human2.Attack(human1);
+                human1.TestPrintStatus();
+                human2.TestPrintStatus();
+            }
+            Console.WriteLine("누군가가 사망하였습니다.");
+        }
+
 
         private static void TESTGUGUDAN()
         {

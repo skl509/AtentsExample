@@ -19,20 +19,26 @@ namespace _01__Console
     public class Charactor // Test 라는 클래스를 public으로 선언한다.
     {
         //멤버 변수 -> 이 클래스에서 사용되는 데이터
-    private string name;
-    private int hp = 100;
-    private int maxHP = 100;
-    private int strenth = 0;
-    private int dexteriy = 0;
-    private int intellegence = 0;
+    protected string name;
+    protected int hp = 100;
+    protected int maxHP = 100;
+    protected int strenth = 0;
+    protected int dexteriy = 0;
+    protected int intellegence = 0;
 
+        public string Name => name;
+
+        protected bool isDead = false;
+
+        public bool IsDead => isDead; // 읽기전용 프로퍼티 만들기 = public bool IsDead {get => isDead;}
+        
 
         // 배열 : 같은 종류의 데이터 타입을 
         //int[] intArray; // 인티저를 여러개 가질 수 있는 배열
         //intArray = new int[5]; // 인티저를 5개 가질 수 있도록 할당
 
-        string[] nameArray = { "너굴맨", "개굴맨", "벡터맨", "샥샥맨", "사슴맨" }; // nameArray에 기본값 설정(선언과 할당을 동시에)
-        Random rand;
+       protected string[] nameArray = { "너굴맨", "개굴맨", "벡터맨", "샥샥맨", "사슴맨" }; // nameArray에 기본값 설정(선언과 할당을 동시에)
+       protected Random rand;
         
         public int HP // 프로퍼티 get/set 이용
         {
@@ -50,15 +56,22 @@ namespace _01__Console
                 }
                 if (hp <= 0)
                 {
-                    Console.WriteLine($"{name}이 죽었습니다.");
-                }            }
+                    Dead();
+                }
+            }
+        }
+
+        private void Dead()
+        {
+            Console.WriteLine($"{name}이 죽었습니다.");
+            isDead = true;
         }
 
         public Charactor()
         {
 
            // Console.WriteLine("생성자 호출");
-            rand = new Random();
+            rand = new Random(DateTime.Now.Millisecond);
             int randomNumber = rand.Next();
             randomNumber %= 5;
             name = nameArray[randomNumber];
@@ -84,7 +97,7 @@ namespace _01__Console
         public Charactor(string newName)
         {
             Console.WriteLine($"생성자 호출 - {newName}");
-            rand = new Random();
+            rand = new Random(DateTime.Now.Millisecond);
             name = newName;
             GenerateStatus();
             TestPrintStatus();
@@ -92,7 +105,7 @@ namespace _01__Console
         }
 
 
-        private void GenerateStatus()
+        public virtual void GenerateStatus()
         {
            
             maxHP = rand.Next(100, 201);
@@ -104,7 +117,7 @@ namespace _01__Console
 
         }
         //멤버 함수 -> 이 클래스가 가지는 기능
-        public void Attack(Charactor target)
+        public virtual void Attack(Charactor target)
         {
             int damage = strenth;
             target.TakeDamage(damage);
@@ -116,7 +129,7 @@ namespace _01__Console
             Console.WriteLine($"{name}이 {damage}만큼의 피해를 입었습니다.");
         }
 
-        public void TestPrintStatus()
+        public virtual void TestPrintStatus()
         {
             Console.WriteLine("┌─────────────────┐");
             Console.WriteLine($"이름\t: {name}");
