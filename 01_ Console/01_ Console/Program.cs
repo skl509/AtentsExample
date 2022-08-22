@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
@@ -50,10 +51,80 @@ namespace _01__Console
             //human1.HP = 20;
 
 
-           
-            Test_Charctor();
+
+            Human player;
+            string result;
+            do
+            {
+                Console.Write("당신의 이름을 입력해 주세요 : ");
+                string name = Console.ReadLine();
+                player = new Human(name);
+                Console.Write($"이대로 진행하시겠습니까? (yes/no): ");
+                result = Console.ReadLine();
+            }
+
+            while (!(result == "yes" || result == "Yes" || result == "Y" || result == "y"));
+           // ! -> 반댓값 출력
+            Orc enemy = new Orc("가로쉬");
+
             Console.ReadKey(); // 키 입력 대기코드
         }
+
+
+        //private static void play()
+        //{
+        //    Human player = new Human();
+        //    Orc enemy = new Orc("가로쉬");
+
+        //    while (!human1.IsDead && !orc1.IsDead) //bool 타입으로 해주면 while 이용 용이, human1이 살아있고 orc1 도 살아있다
+        //    {
+        //        Console.WriteLine($"행동을 입력해 주세요 : ");
+        //        Console.Write("1.공격 2.방어 3.스킬 ");
+
+        //        String TEMP = Console.ReadLine(); //공격,방어,스킬 입력
+
+        //        int n;
+
+        //        int.TryParse(TEMP, out n);
+                
+
+        //        switch (n)
+        //        {
+        //            case 1: //공격 함수 불러오기
+        //                Console.WriteLine("공격을 실행합니다");
+        //                human1.Attack(orc1);
+
+        //                break;
+        //            case 2:  //방어 함수 불러오기
+        //                Console.WriteLine("방어을 실행합니다");
+        //                human1.Defence(orc1);
+
+
+        //                break;
+        //            case 3:  //힐링 함수 불러오기
+        //                Console.WriteLine("스킬을 발동 시킵니다");
+        //                human1.Healing(human1);
+        //                break;
+
+        //            default:
+        //                continue;
+        //        }
+
+        //        human1.TestPrintStatus();
+        //        orc1.TestPrintStatus();
+        //        if (orc1.IsDead)
+        //        {
+        //            break;
+        //        }
+        //        orc1.Attack(human1);
+        //        human1.TestPrintStatus();
+        //        orc1.TestPrintStatus();
+        //    }
+        //    if(human1.IsDead)
+        //        Console.WriteLine("사람이 사망하였습니다."); //줄맞춤은 인텐드 = tab,space 로 맞추기
+        //    else
+        //        Console.WriteLine("오크가 사망하였습니다.");
+        //}
 
         private static void Test_Charctor()
         {
@@ -83,7 +154,6 @@ namespace _01__Console
             Console.WriteLine("누군가가 사망하였습니다.");
         }
 
-
         private static void TESTGUGUDAN()
         {
             int n = 0;
@@ -99,13 +169,6 @@ namespace _01__Console
 
             Console.ReadKey(); // 키 입력 대기코드
         }
-
-
-
-
-
-
-
 
 
         private static void Multfly(int n)
@@ -160,22 +223,22 @@ namespace _01__Console
             int result = a + b;
             return result;
         }
-            static void Print() // 리턴해주는 값이 없고, 파라메터도 없는 경우
-            {
-                Console.WriteLine("Print");
-            
-            }
+        static void Print() // 리턴해주는 값이 없고, 파라메터도 없는 경우
+        {
+            Console.WriteLine("Print");
+
+        }
         void Test()
         {
             Console.WriteLine("송경일"); // 출력
-            //string str = Console.ReadLine(); // 키보드 입력을 받아서 str 이라는 string 변수에 저장한다
-            //Console.WriteLine(str);
-            // 변수:변하는 숫자, 컴퓨터에서 사용할 데이터를 저장할 수 있는 곳
-            // 변수의 종류 : 데이터 타입
-            // int : 인티저, 정수, 소수점 없는 숫자. 
-            // float : 플로트, 실수, 소수점 있는 숫자. 
-            // string : 스트링, 문자열, 글자들을 저장
-            // bool : 불리언, true/false 를 저장.
+                                      //string str = Console.ReadLine(); // 키보드 입력을 받아서 str 이라는 string 변수에 저장한다
+                                      //Console.WriteLine(str);
+                                      // 변수:변하는 숫자, 컴퓨터에서 사용할 데이터를 저장할 수 있는 곳
+                                      // 변수의 종류 : 데이터 타입
+                                      // int : 인티저, 정수, 소수점 없는 숫자. 
+                                      // float : 플로트, 실수, 소수점 있는 숫자. 
+                                      // string : 스트링, 문자열, 글자들을 저장
+                                      // bool : 불리언, true/false 를 저장.
 
             int a = 10; // a라는 인티저 변수에 10이라는 데이터를 넣는다.
             long b = 5000000000; // 50억은 int에 넣을 수 없다. -> int는 32비트이고 32비트로 표현 할 수 있는 숫자의 개수는 약 42억개(+ - 나누면 약 21억개)
@@ -373,6 +436,26 @@ namespace _01__Console
 
 
         }
+
+
     }
-    }
+
+
+
+
+
+   
+
+
+
+
+
+
+
+
+
+   
+
+
+}
 
