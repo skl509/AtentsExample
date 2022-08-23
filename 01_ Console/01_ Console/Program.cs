@@ -101,8 +101,8 @@ namespace _01__Console
 
 
                 player.Attack(enemy); 
-                player.TestPrintStatus(); // 나와 적상태 출력
-                enemy.TestPrintStatus();
+                player.PrintStatus(); // 나와 적상태 출력
+                enemy.PrintStatus();
                 if (enemy.IsDead) // 적이 죽으면 스일표시하고 무한루프 종료
                 {
                     Console.WriteLine("승리!");
@@ -111,8 +111,8 @@ namespace _01__Console
                 }
                 // 적이 안죽었으면 적이 공격시작
                 enemy.Attack(player); // 적은 그냥 무조건 공격
-                player.TestPrintStatus(); //나와 적은 상태 표시
-                enemy.TestPrintStatus();
+                player.PrintStatus(); //나와 적은 상태 표시
+                enemy.PrintStatus();
                 if (player.IsDead) // 내가 죽으면 패배표시하고 무한 루프 종료
                 {
                     Console.WriteLine("패배...");
@@ -193,15 +193,15 @@ namespace _01__Console
             while (!human1.IsDead && !human2.IsDead) //bool 타입으로 해주면 while 이용 용이, human1이 살아있고 human2 도 살아있다
             {
                 human1.Attack(human2);
-                human1.TestPrintStatus();
-                human2.TestPrintStatus();
+                human1.PrintStatus();
+                human2.PrintStatus();
                 if (human2.IsDead)
                 {
                     break;
                 }
                 human2.Attack(human1);
-                human1.TestPrintStatus();
-                human2.TestPrintStatus();
+                human1.PrintStatus();
+                human2.PrintStatus();
             }
             Console.WriteLine("누군가가 사망하였습니다.");
         }

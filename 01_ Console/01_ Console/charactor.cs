@@ -65,20 +65,20 @@ namespace _01__Console
             }
         }
 
-        private void Dead()
+        private void Dead() // 사망처리용 함수
         {
             Console.WriteLine($"{name}이 죽었습니다.");
-            isDead = true;
+            isDead = true; // isDead에 죽었다고 표시
         }
 
         public Charactor()
         {
 
             // Console.WriteLine("생성자 호출");
-            rand = new Random(DateTime.Now.Millisecond);
-            int randomNumber = rand.Next();
-            randomNumber %= 5;
-            name = nameArray[randomNumber];
+            rand = new Random(DateTime.Now.Millisecond); //랜덤 클래스 시드값 설정
+            int randomNumber = rand.Next();// 랜덤클래스 이용해서 0~21억
+            randomNumber %= 5; // 랜덤으로 고른숫자를 0~4로 변경
+            name = nameArray[randomNumber]; // 0~4로 변경한 갑 ㅅ을 인덱스로 사용하여 이름 배열에서 이름 선택
 
             maxHP = rand.Next(100, 201);
             hp = maxHP;
@@ -89,7 +89,7 @@ namespace _01__Console
             defence = rand.Next(20) + 1;
             healing = rand.Next(20) + 1;
 
-            TestPrintStatus();
+            PrintStatus();
             //실습
             //1. 이름이 nameArray에 들어 있는 것 중 하나로 랜덤하게 선택된다.
             //2. maxHP는 100~200 사이로 랜덤하게 선택된다.
@@ -104,9 +104,9 @@ namespace _01__Console
         {
            
             rand = new Random(DateTime.Now.Millisecond);
-            name = newName;
+            name = newName; // 이름은 파라메터로 입력 받은 것을 사용
             GenerateStatus();
-            TestPrintStatus();
+            PrintStatus();
 
         }
 
@@ -114,7 +114,7 @@ namespace _01__Console
         public virtual void GenerateStatus()
         {
 
-            maxHP = rand.Next(100, 201);
+            maxHP = rand.Next(100, 201); // 100에서 200중에 랜덤으로 선택
             hp = maxHP;
 
             strenth = rand.Next(20) + 1; // 1~20사이를 랜덤하게 선택 , (20) -> 1~19 까지 랜덤 
@@ -123,13 +123,13 @@ namespace _01__Console
             
         }
         //멤버 함수 -> 이 클래스가 가지는 기능
-        public virtual void Attack(Charactor target)
+        public virtual void Attack(Charactor target) // 타겟을 공격하는 함수
         {
             int damage = strenth;
-            target.TakeDamage(damage);
+            target.TakeDamage(damage);// tagrget 에게 데미지를 전달...
             Console.WriteLine($"{name}이 {target.name}에게 {damage}만큼의 공격을 합니다.({damage})");
         }
-        public virtual void TakeDamage(int damage)
+        public virtual void TakeDamage(int damage) //데미지를 전달하기 위한 값을 설정하는 함수
         {
             HP -= damage;
             Console.WriteLine($"{name}이 {damage}만큼의 피해를 입었습니다.");
@@ -141,33 +141,15 @@ namespace _01__Console
             target.TakeDamage(damage);
             Console.WriteLine($"{target.name}이 {name}에게 {damage - defence}만큼의 공격을 막았습니다.({damage - defence})");
         }
-        public virtual void TakeDamage1(int defence)
-        {
-            int damage = strenth;
-            damage -= defence;
-            Console.WriteLine($"{name}이 {defence}만큼의 대미지를 막았습니다.");
-        }
-
-        public virtual void Healing(Charactor target) //휴먼의 스킬
-        {
-            int Healing = healing;
-            healing = rand.Next(20);
-            target.TakeHealing(Healing);
-            Console.WriteLine($"{target.name}이 {healing}만큼의 체력을 회복했습니다.");
-        }
-        public void TakeHealing(int healing)
-        {
-            
-            HP += healing;
-            mp -= 1;
-        }
+       
+       
 
 
 
 
 
 
-        public virtual void TestPrintStatus()
+        public virtual void PrintStatus()
         {
             Console.WriteLine("┌─────────────────┐");
             Console.WriteLine($"이름\t: {name}");

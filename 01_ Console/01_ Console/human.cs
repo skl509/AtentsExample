@@ -8,7 +8,7 @@ namespace _01__Console
 {
     internal class Human : Charactor //human 클래스는 charactor 클래스를 상속 받았다.
     {
-        protected int mp = 100;
+        protected int mp = 100; //휴먼은 mp를 가지고 있다... 추가로
         protected int maxMP = 100;
         protected const int DefenseCount = 3; // 변하지 않는 상수는 const 로 고정시켜주기!
         protected int remainsDefenseCount = 0;
@@ -18,7 +18,7 @@ namespace _01__Console
             //GenerateStatus();// 변수 이용 못하는 이유는 상속받아도 이것이 private 으로 제한 되어있기 때문이다
         }                    // 그러나 protected 면 가능하다, 상속받은 애는 이용가능
 
-        public Human(string newName) : base(newName) 
+        public Human(string newName) : base(newName)  // charactor(string newName) 실행...
         {
         
         }
@@ -29,14 +29,13 @@ namespace _01__Console
             mp = maxMP;
         }
 
-        public override void TestPrintStatus()
+        public override void PrintStatus()
         {
             Console.WriteLine("┌─────────────────┐");
             Console.WriteLine($"이름\t: {name}");
             Console.WriteLine($"HP\t: {hp} / {maxHP}");
             Console.WriteLine($"MP\t: {mp} / {maxMP}");
             Console.WriteLine($"힘\t: {strenth,2}");
-            Console.WriteLine($"방어\t: {defence,2}");
             Console.WriteLine($"민첩\t: {dexteriy,2}");
             Console.WriteLine($"지능\t: {intellegence,2}");
             Console.WriteLine("└─────────────────┘");
@@ -63,11 +62,22 @@ namespace _01__Console
 
         {   // rand.NextDouble() : 0~1
             // rand.NextDouble() * 1.5f : 0~ 1.5
+           const int requireMP = 10; //스킬 사용할때 필요한 마나량...
 
-            int damage = (int)((rand.NextDouble() * 1.5f) + 1) * intellegence; // 지능을 1~2.5 배 한 결과에서 소수점 제거한 수
-            target.TakeDamage(damage);
-            Console.WriteLine($"{name}이 {target.Name}에게 {damage}만큼의 스킬을 사용합니다.({damage})");
-            target.TakeDamage(damage);
+            if (mp - requireMP > 0) // 스킬을 사용할 수있을 만큼 마나가 있으면 작동
+            {
+                int damage = (int)((rand.NextDouble() * 1.5f) + 1) * intellegence; // 지능을 1~2.5 배 한 결과에서 소수점 제거한 수
+                target.TakeDamage(damage);
+                Console.WriteLine($"{name}이 {target.Name}에게 {damage}만큼의 스킬을 사용합니다.({damage})");
+                target.TakeDamage(damage);
+                mp -= requireMP; // mp 감소
+            }
+            else {
+
+                Console.WriteLine("마나가 부족합니다.");
+
+            }
+
         }
         public void Defense()
         {
@@ -75,15 +85,15 @@ namespace _01__Console
             remainsDefenseCount += DefenseCount; // 상수가 고정되고 결과적으로 remian 값이 올라간다...
         }
         public override void TakeDamage(int damage)
-        {
+        { // 방어 횟수가 남아있으면
             if (remainsDefenseCount > 0) 
             {   
                 Console.WriteLine("방어 발동! 받는 데미지가 절반 감소합니다");
-                remainsDefenseCount--;
-                damage = damage >> 1;//절반값 2의1승으로 나눠주기
+                remainsDefenseCount--; //회수 1차감하고
+                damage = damage >> 1;//절반값 2의1승으로 나눠주기, int 타입일때만 가능
 
             }
-            base.TakeDamage(damage);
+            base.TakeDamage(damage); // 나에게 데미지 전달
         }
     }
 

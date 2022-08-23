@@ -23,15 +23,15 @@ namespace _01__Console
             while (!human1.IsDead && !human2.IsDead) //bool 타입으로 해주면 while 이용 용이, human1이 살아있고 human2 도 살아있다
             {
                 human1.Attack(human2);
-                human1.TestPrintStatus();
-                human2.TestPrintStatus();
+                human1.PrintStatus();
+                human2.PrintStatus();
                 if (human2.IsDead)
                 {
                     break;
                 }
                 human2.Attack(human1);
-                human1.TestPrintStatus();
-                human2.TestPrintStatus();
+                human1.PrintStatus();
+                human2.PrintStatus();
             }
             Console.WriteLine("누군가가 사망하였습니다.");
         }

@@ -17,14 +17,14 @@ namespace _01__Console
         {
             
            
-        }
+        } // 생성자같은 경우 상속이 안되니 무조건 새로만들어야됨
 
         public override void GenerateStatus()
         {
           
             base.GenerateStatus();
-            strenth = rand.Next(30) + 1;
-            rage = 0;
+            strenth += rand.Next(10) + 1;// 오크라 힘을 추가로 더함
+            rage = 0; // 시작 분노는 0
         }
         void BerserkenMode(bool on)
         {
@@ -49,15 +49,15 @@ namespace _01__Console
 
         public override void TakeDamage(int damage)
         {   // 맞을 때마다 최대 분노의 1/10 증가 + 데미지 10당 1씩 증가
-            rage += (int)(MaxRage * 0.1f + damage*0.1f);
+            rage += (int)(MaxRage * 0.1f + damage*0.1f); // 분노가 최대 분노를 넘어서면
             if (rage >= MaxRage) 
             {
-                BerserkenMode(true);   
+                BerserkenMode(true);   //버서커 모드가된다
             }
-            base.TakeDamage(damage);
+            base.TakeDamage(damage); // 플레이어한테 데미지 전달
         }
 
-        public override void TestPrintStatus()
+        public override void PrintStatus()
         {
             Console.WriteLine("┌─────────────────┐");
             Console.WriteLine($"이름\t: {name}");
