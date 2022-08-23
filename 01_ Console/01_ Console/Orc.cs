@@ -68,6 +68,6 @@ namespace _01__Console
             Console.WriteLine($"민첩\t: {dexteriy,2}");
             Console.WriteLine($"지능\t: {intellegence,2}");
             Console.WriteLine("└─────────────────┘");
-        }
+        } // 브레이킹 포인트 찾는것은 그변수 클릭해서 모든참조 찾기 -> 잘못 출력된 곳을 발견하면 그곳 위주로 어떻게 처리되는지 확인필요!
     }
  }
