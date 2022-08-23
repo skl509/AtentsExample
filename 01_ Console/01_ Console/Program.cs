@@ -65,7 +65,7 @@ namespace _01__Console
 
             while (!(result == "yes" || result == "Yes" || result == "Y" || result == "y"));
            // ! -> 반댓값 출력
-            Orc enemy = new Orc("가로쉬");
+            Orc enemy = new Orc("가로쉬"); //적만들기
 
             Console.WriteLine($"오크 {enemy.Name}가 나타났다.");
 
@@ -82,37 +82,38 @@ namespace _01__Console
                     int.TryParse(temp, out selection);
                 } //while (selection != 1 && selection !=2 && selection != 3);
                 while (selection < 1 || selection > 3); // 와일은 참값일때만 계쏙 실행되니
-                                                        // 멈추게 할려면 범위 반대되게 조건 식 새워준다!
-
-                switch (selection) 
+               //1~3 사이가 아니면 while을 계속실행    // 멈추게 할려면 범위 반대되게 조건 식 새워준다!
+               //ㄴ1~3 이면 바로종료...
+                switch (selection) //switch 문을 통해 1,2,3 을 처리
                 {
                     case 1:
-                        player.Attack(enemy);
+                        player.Attack(enemy); // 1이면 공격
                         break;
                     case 2:
-                        player.Skill(enemy);
+                        player.Skill(enemy); // 2이면 스킬사용
                         break;
                     case 3:
-                        player.Defense();
+                        player.Defense(); //3이면 방어태세
                         break;
-                    default:
+                    default: // 1,2,3 이 아닌경우. 코드 구조상 들어오면 안됨
                         break;
                 }
 
 
-                player.Attack(enemy);
-                player.TestPrintStatus();
+                player.Attack(enemy); 
+                player.TestPrintStatus(); // 나와 적상태 출력
                 enemy.TestPrintStatus();
-                if (enemy.IsDead) 
+                if (enemy.IsDead) // 적이 죽으면 스일표시하고 무한루프 종료
                 {
                     Console.WriteLine("승리!");
                     break;
                 
                 }
-                enemy.Attack(player);
-                player.TestPrintStatus();
+                // 적이 안죽었으면 적이 공격시작
+                enemy.Attack(player); // 적은 그냥 무조건 공격
+                player.TestPrintStatus(); //나와 적은 상태 표시
                 enemy.TestPrintStatus();
-                if (player.IsDead)
+                if (player.IsDead) // 내가 죽으면 패배표시하고 무한 루프 종료
                 {
                     Console.WriteLine("패배...");
                     break;

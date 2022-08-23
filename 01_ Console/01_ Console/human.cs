@@ -81,6 +81,7 @@ namespace _01__Console
                 Console.WriteLine("방어 발동! 받는 데미지가 절반 감소합니다");
                 remainsDefenseCount--;
                 damage = damage >> 1;//절반값 2의1승으로 나눠주기
+
             }
             base.TakeDamage(damage);
         }

@@ -36,14 +36,14 @@ namespace _01__Console
 
         public bool IsDead => isDead; // 읽기전용 프로퍼티 만들기 = public bool IsDead {get => isDead;}
 
+        private string[] nameArray = { "너굴맨", "개굴맨", "벡터맨", "샥샥맨", "사슴맨" }; // nameArray에 기본값 설정(선언과 할당을 동시에)
+        protected Random rand;
 
         // 배열 : 같은 종류의 데이터 타입을 
         //int[] intArray; // 인티저를 여러개 가질 수 있는 배열
         //intArray = new int[5]; // 인티저를 5개 가질 수 있도록 할당
 
-        protected string[] nameArray = { "너굴맨", "개굴맨", "벡터맨", "샥샥맨", "사슴맨" }; // nameArray에 기본값 설정(선언과 할당을 동시에)
-        protected Random rand;
-
+        //프로퍼티들
         public int HP // 프로퍼티 get/set 이용
         {
             get // 이프로퍼티를 읽을 때 호출되는 부분
@@ -53,7 +53,7 @@ namespace _01__Console
             private set // 이 프로퍼티에 값을 넣을 때 호출되는 부분
             {
                 hp = value;
-                if (hp > maxHP)
+                if (hp > maxHP) // hp 가 maxhp 넘길씨 maxhp 와 동일하게 되도록 설정
                 {
                     hp = maxHP;
 
