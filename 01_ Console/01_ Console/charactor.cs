@@ -120,7 +120,7 @@ namespace _01__Console
             strenth = rand.Next(20) + 1; // 1~20사이를 랜덤하게 선택 , (20) -> 1~19 까지 랜덤 
             dexteriy = rand.Next(20) + 1;
             intellegence = rand.Next(20) + 1;
-
+            
         }
         //멤버 함수 -> 이 클래스가 가지는 기능
         public virtual void Attack(Charactor target)

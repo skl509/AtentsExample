@@ -67,6 +67,57 @@ namespace _01__Console
            // ! -> 반댓값 출력
             Orc enemy = new Orc("가로쉬");
 
+            Console.WriteLine($"오크 {enemy.Name}가 나타났다.");
+
+            Console.WriteLine("\n\n--------------------------------------전투시작-------------------------------\n\n");
+
+            while (true) // while 문은 참이면 계속 실행. 무한루프되니깐 종료되는 조건을 넣어줘야된다!
+            {
+                int selection = 0;
+                do
+                {
+
+                    Console.WriteLine("행동을 선택하세요 (1)공격 (2)스킬 (3)방어");
+                    string temp = Console.ReadLine();
+                    int.TryParse(temp, out selection);
+                } //while (selection != 1 && selection !=2 && selection != 3);
+                while (selection < 1 || selection > 3); // 와일은 참값일때만 계쏙 실행되니
+                                                        // 멈추게 할려면 범위 반대되게 조건 식 새워준다!
+
+                switch (selection) 
+                {
+                    case 1:
+                        player.Attack(enemy);
+                        break;
+                    case 2:
+                        player.Skill(enemy);
+                        break;
+                    case 3:
+                        player.Defense();
+                        break;
+                    default:
+                        break;
+                }
+
+
+                player.Attack(enemy);
+                player.TestPrintStatus();
+                enemy.TestPrintStatus();
+                if (enemy.IsDead) 
+                {
+                    Console.WriteLine("승리!");
+                    break;
+                
+                }
+                enemy.Attack(player);
+                player.TestPrintStatus();
+                enemy.TestPrintStatus();
+                if (player.IsDead)
+                {
+                    Console.WriteLine("패배...");
+                    break;
+                }
+            }
             Console.ReadKey(); // 키 입력 대기코드
         }
 

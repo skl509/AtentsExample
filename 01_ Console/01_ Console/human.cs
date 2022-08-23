@@ -10,6 +10,8 @@ namespace _01__Console
     {
         protected int mp = 100;
         protected int maxMP = 100;
+        protected const int DefenseCount = 3; // 변하지 않는 상수는 const 로 고정시켜주기!
+        protected int remainsDefenseCount = 0;
 
         public Human() // 상속 받은 부모의 생성자도 같이 실행
         {
@@ -66,6 +68,21 @@ namespace _01__Console
             target.TakeDamage(damage);
             Console.WriteLine($"{name}이 {target.Name}에게 {damage}만큼의 스킬을 사용합니다.({damage})");
             target.TakeDamage(damage);
+        }
+        public void Defense()
+        {
+            Console.WriteLine($"3턴간 받는 데미지 반감");
+            remainsDefenseCount += DefenseCount; // 상수가 고정되고 결과적으로 remian 값이 올라간다...
+        }
+        public override void TakeDamage(int damage)
+        {
+            if (remainsDefenseCount > 0) 
+            {   
+                Console.WriteLine("방어 발동! 받는 데미지가 절반 감소합니다");
+                remainsDefenseCount--;
+                damage = damage >> 1;//절반값 2의1승으로 나눠주기
+            }
+            base.TakeDamage(damage);
         }
     }
 

@@ -10,7 +10,7 @@ namespace _01__Console
     internal class Orc : Human
     {
         int rage = 0; // 오크만의 고유변수는 분노..
-        const int Maxrage = 100; // const-> 상수로 결정. 시작부터 끝까지 값이 변하지 않는다.
+        const int MaxRage = 100; // const-> 상수로 결정. 시작부터 끝까지 값이 변하지 않는다.
         bool berserker = false;
 
         public Orc(string _newName) : base(_newName)
@@ -21,6 +21,7 @@ namespace _01__Console
 
         public override void GenerateStatus()
         {
+          
             base.GenerateStatus();
             strenth = rand.Next(30) + 1;
             rage = 0;
@@ -48,8 +49,8 @@ namespace _01__Console
 
         public override void TakeDamage(int damage)
         {   // 맞을 때마다 최대 분노의 1/10 증가 + 데미지 10당 1씩 증가
-            rage += (int)((float)Maxrage * 0.1f + damage*0.1f);
-            if (rage >= Maxrage) 
+            rage += (int)(MaxRage * 0.1f + damage*0.1f);
+            if (rage >= MaxRage) 
             {
                 BerserkenMode(true);   
             }
@@ -61,7 +62,7 @@ namespace _01__Console
             Console.WriteLine("┌─────────────────┐");
             Console.WriteLine($"이름\t: {name}");
             Console.WriteLine($"HP\t: {hp} / {maxHP}");
-            Console.WriteLine($"Rage\t: {Maxrage,4}");
+            Console.WriteLine($"Rage\t: {rage,4}");
             Console.WriteLine($"힘\t: {strenth,2}");
             Console.WriteLine($"방어\t: {defence,2}");
             Console.WriteLine($"민첩\t: {dexteriy,2}");
