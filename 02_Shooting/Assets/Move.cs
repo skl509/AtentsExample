@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+
 
 public class Move : MonoBehaviour
 {
@@ -19,9 +21,12 @@ public class Move : MonoBehaviour
         Debug.Log("Hello Unity");
     }
 
+
     /// <summary>
     /// Update 함수. 매 프레임마다 호출되는 함수. 지속적으로 변경되는 것이 있을 때 사용하는 함수.
     /// </summary>
+   
+
     private void Update()
     {
         // Vector3 : 벡터를 표현하기 위한 구조체. 위치를 표현할 때도 많이 사용한다.
@@ -48,29 +53,51 @@ public class Move : MonoBehaviour
 
         // Input System
         // Event-driven(이벤트 드리븐) 방식으로 구현 -> 일이 있을 때만 동작한다.(전력을 아끼기에 적합한 구조)
+
+
+    }
+
+    public void MoveInput(InputAction.CallbackContext context)
+    {
+        if (context.started) // 매핑된 키가 누른 직후
+        {
+            Debug.Log("입력들어옴 - started");
+        }
+        if (context.performed) // 매핑된 키가 확실하게 눌러졌다.
+        {
+            Debug.Log("입력들어옴 - performed");
+        }
+        if (context.canceled) // 매핑된 키가 떨어 졌을 때.
+        {
+            Debug.Log("입력들어옴 - canceled");
+        }
+        Vector2 inputDir = context.ReadValue<Vector2>();
+        Debug.Log(inputDir);    
     }
 
     private void Test_OldinputManager()
-    {
-        if (Input.GetKeyDown(KeyCode.W))
         {
-            Debug.Log("W가 눌러졌다.");
-            dir = Vector3.up;
-        }
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            Debug.Log("A가 눌러졌다.");
-            dir = Vector3.left;
-        }
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            Debug.Log("S가 눌러졌다.");
-            dir = Vector3.down;
-        }
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            Debug.Log("D가 눌러졌다.");
-            dir = Vector3.right;
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                Debug.Log("W가 눌러졌다.");
+                dir = Vector3.up;
+            }
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                Debug.Log("A가 눌러졌다.");
+                dir = Vector3.left;
+            }
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                Debug.Log("S가 눌러졌다.");
+                dir = Vector3.down;
+            }
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                Debug.Log("D가 눌러졌다.");
+                dir = Vector3.right;
+            }
         }
     }
-}
+
+
