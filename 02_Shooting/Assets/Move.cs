@@ -43,6 +43,15 @@ public class Move : MonoBehaviour
 
         // Input Manager를 이용한 입력 처리
         // Busy wait이 발생.( 하는일은 없지만 사용되고 있는 상태 => 전력 세이빙을 방해 => 전력 커짐 )
+        //Test_OldinputManager(); // 예전에 이용하는 인풋매니저
+        transform.position += (speed * Time.deltaTime * dir);
+
+        // Input System
+        // Event-driven(이벤트 드리븐) 방식으로 구현 -> 일이 있을 때만 동작한다.(전력을 아끼기에 적합한 구조)
+    }
+
+    private void Test_OldinputManager()
+    {
         if (Input.GetKeyDown(KeyCode.W))
         {
             Debug.Log("W가 눌러졌다.");
@@ -63,9 +72,5 @@ public class Move : MonoBehaviour
             Debug.Log("D가 눌러졌다.");
             dir = Vector3.right;
         }
-        transform.position += (speed * Time.deltaTime * dir);
-
-        // Input System
-        // Event-driven(이벤트 드리븐) 방식으로 구현 -> 일이 있을 때만 동작한다.(전력을 아끼기에 적합한 구조)
     }
 }
