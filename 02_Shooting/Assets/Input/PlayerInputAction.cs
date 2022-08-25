@@ -46,7 +46,7 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Enter"",
+                    ""name"": ""Bootster"",
                     ""type"": ""Button"",
                     ""id"": ""b8badb69-8479-45a1-81a9-e079e3f93b35"",
                     ""expectedControlType"": ""Button"",
@@ -125,11 +125,11 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""832533fa-3908-4cb1-8315-efb0b1199122"",
-                    ""path"": ""<Keyboard>/enter"",
+                    ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
-                    ""action"": ""Enter"",
+                    ""action"": ""Bootster"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -159,7 +159,7 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
-        m_Player_Enter = m_Player.FindAction("Enter", throwIfNotFound: true);
+        m_Player_Bootster = m_Player.FindAction("Bootster", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -221,14 +221,14 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
     private IPlayerActions m_PlayerActionsCallbackInterface;
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Fire;
-    private readonly InputAction m_Player_Enter;
+    private readonly InputAction m_Player_Bootster;
     public struct PlayerActions
     {
         private @PlayerInputAction m_Wrapper;
         public PlayerActions(@PlayerInputAction wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Fire => m_Wrapper.m_Player_Fire;
-        public InputAction @Enter => m_Wrapper.m_Player_Enter;
+        public InputAction @Bootster => m_Wrapper.m_Player_Bootster;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -244,9 +244,9 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                 @Fire.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire;
                 @Fire.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire;
                 @Fire.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire;
-                @Enter.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEnter;
-                @Enter.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEnter;
-                @Enter.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEnter;
+                @Bootster.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBootster;
+                @Bootster.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBootster;
+                @Bootster.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBootster;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -257,9 +257,9 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                 @Fire.started += instance.OnFire;
                 @Fire.performed += instance.OnFire;
                 @Fire.canceled += instance.OnFire;
-                @Enter.started += instance.OnEnter;
-                @Enter.performed += instance.OnEnter;
-                @Enter.canceled += instance.OnEnter;
+                @Bootster.started += instance.OnBootster;
+                @Bootster.performed += instance.OnBootster;
+                @Bootster.canceled += instance.OnBootster;
             }
         }
     }
@@ -286,6 +286,6 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnFire(InputAction.CallbackContext context);
-        void OnEnter(InputAction.CallbackContext context);
+        void OnBootster(InputAction.CallbackContext context);
     }
 }
