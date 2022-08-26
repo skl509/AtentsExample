@@ -21,10 +21,14 @@ public class Player : MonoBehaviour // 따로 함수만들어서 드래그해 �
     Rigidbody2D rigid;
     float booster = 1.0f;
 
+    Animator anim;
+
     private void Awake() // 이 스크립트가 들어있는 게임 오브젝트가 생성된 직후 
     {                   // -> 1순위로 실행
         inputActions = new PlayerInputAction();
         rigid = GetComponent<Rigidbody2D>(); // 한번만 찾고 저장해서 계속 쓰기(메모리 더쓰고 성능아끼기)
+        anim = GetComponent<Animator>(); //GetComponent 는 반드시 중요!! 애니메이터 찾아오는것
+    
     }
 
     private void OnEnable() // 이 스크립트가 들어있는 게임 오브젝트가 활성화(체크되어있을때) 되었을때 호출
@@ -83,7 +87,12 @@ public class Player : MonoBehaviour // 따로 함수만들어서 드래그해 �
         Vector2 inputDir = context.ReadValue<Vector2>();      // 어느방향으로 움직여야 하는지를 입력
         dir = inputDir;      
         Debug.Log("이동입력");
-    
+        //dir.y > 0 w 눌럿다
+        //dir.y == 0 w,s중 아무것도 안눌럿다
+        //dir.y < 0 s를 눌럿다
+
+        anim.SetFloat("InputY", dir.y); // Y 값을 설정해주는 것! 애니메이션 조건식에 따라 달라짐 up and down
+
    }
     private void OnFire(InputAction.CallbackContext context)
     {
