@@ -1,6 +1,7 @@
-using System;
+
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,13 +9,14 @@ public class Player : MonoBehaviour // 따로 함수만들어서 드래그해 �
 {
     PlayerInputAction inputActions;
 
-   // public delegate void DelegateName(); // 이런 종류의 델리게이트가 있다(리턴없고 파라메터도 없는 함수를 저장하는 델리게이트)
+    // public delegate void DelegateName(); // 이런 종류의 델리게이트가 있다(리턴없고 파라메터도 없는 함수를 저장하는 델리게이트)
 
     //public DelegateName de1; // DelegateName 타입으로 del 이라는 이름의 델리게이트를 만듬
     //Action del2; // 리턴타입이 void, 파라메터도 없는 델리게이트 del2를 만듬 -> 보통 이걸 많이씀
     //Action<int> del3; // 리턴타입이 void, 파라메터는 int 하나인 델리게이트 del3을 만듬
     //Func<int, float> del14; // 리턴타입이 int고 파라메터는 float 하나인 델리게이트 del4를 만듬
 
+    public GameObject Bullet;
 
     float speed = 2.0f; //플레이어의 이동속도(초당 이동 속도)
     Vector3 dir; // 이동방향(입력에 따라 변경됨)
@@ -79,6 +81,35 @@ public class Player : MonoBehaviour // 따로 함수만들어서 드래그해 �
         // 처음에 부스터랑 스피드가 1이면 변화가 없다 그러나 부스터 변경되는 순간 2배로 변해서 이동속도 변화...
     }
 
+    private void OnCollisionExit2D(Collision2D collision) // Collider와 접촉이 떨어지는 순간
+    {
+        Debug.Log("OnCollisionExit2D");   
+    }
+    private void OnCollisionEnter2D(Collision2D collision) 
+    {
+        Debug.Log("OnCollisionEnter2D"); // Collider와 부딪쳤을 때 실행
+    }
+    private void OnCollisionStay2D(Collision2D collision) //Collider 와 계속 접촉하면서 움직일 때(매 프레임마다 호출)
+    {
+        Debug.Log("OnCollisionStay2D"); 
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision) // 트리거와 들어갔을 때 실행
+    {
+        Debug.Log("OnTriggerEnter2D");
+    }
+
+    private void OnTriggerStay2D(Collider2D collision) // 트리거와 계속 겹쳐있으면서 움질일 때 (매 프레임마다 호출)
+    {
+
+        Debug.Log("OnTriggerStay2D");
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)// 트리거에서 나갔을 때 실행
+    {
+        Debug.Log("OnTriggerExit2D");
+    }
+
     private void OnMove(InputAction.CallbackContext context)
     {
         // Exception : 예외 상황(무엇을 해야 할지 지정이 안되어 있는 예외 일때) -> 프로그램이 끝남
@@ -98,8 +129,10 @@ public class Player : MonoBehaviour // 따로 함수만들어서 드래그해 �
     }
     private void OnFire(InputAction.CallbackContext context)
     {
-        
+        float value = Random.Range(0.0f, 10.0f);// value에는 0.0 ~ 10.0 의 랜덤값이 들어간다.
         Debug.Log("발사!");
+        Instantiate(Bullet, transform.position, Quaternion.identity);
+
     }
     private void OnBooster(InputAction.CallbackContext obj)
     {
@@ -114,5 +147,7 @@ public class Player : MonoBehaviour // 따로 함수만들어서 드래그해 �
         booster = 1.0f;
         Debug.Log("부스터 발동해제 !");
     }
+
+
 
 }
