@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 //Bullet이 계속 자신의 오른쪽 방향으로 이동하도록 코드를 작성하라.
 public class Bullet : MonoBehaviour
 {
-    public float bulletspeed = 10.0f;
+    public float bulletspeed = 20.0f;
    
 
     Animator anim;
