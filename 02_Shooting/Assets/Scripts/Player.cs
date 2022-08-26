@@ -16,7 +16,7 @@ public class Player : MonoBehaviour // 따로 함수만들어서 드래그해 �
     //Func<int, float> del14; // 리턴타입이 int고 파라메터는 float 하나인 델리게이트 del4를 만듬
 
 
-    float speed = 1.0f; //플레이어의 이동속도(초당 이동 속도)
+    float speed = 2.0f; //플레이어의 이동속도(초당 이동 속도)
     Vector3 dir; // 이동방향(입력에 따라 변경됨)
     Rigidbody2D rigid;
     float booster = 1.0f;
@@ -88,12 +88,14 @@ public class Player : MonoBehaviour // 따로 함수만들어서 드래그해 �
         dir = inputDir;      
         Debug.Log("이동입력");
         //dir.y > 0 w 눌럿다
-        //dir.y == 0 w,s중 아무것도 안눌럿다
+        //dir.y == 0 w,s중 아무것도 안눌럿다 또는 동시에 눌렀다
         //dir.y < 0 s를 눌럿다
 
         anim.SetFloat("InputY", dir.y); // Y 값을 설정해주는 것! 애니메이션 조건식에 따라 달라짐 up and down
-
-   }
+        // 애니메이션 파라미터값 InputY 값에 dir.y 값 파라미터 설정해주기! -> SetFloat 함수 이용
+        // Input Y 가 0보다 크거나 작은거 가 적용 될려면 dir.y 값이 입력되야됨
+        // 결과적으로 InputY 값이 조절되어 애니메이션 기능이 작동됨! 
+    }
     private void OnFire(InputAction.CallbackContext context)
     {
         
