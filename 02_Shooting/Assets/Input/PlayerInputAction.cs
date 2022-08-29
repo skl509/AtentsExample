@@ -134,6 +134,34 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Enemy"",
+            ""id"": ""41eb1495-6528-4662-8729-bdddc759717b"",
+            ""actions"": [
+                {
+                    ""name"": ""EnemyGenerator"",
+                    ""type"": ""Button"",
+                    ""id"": ""fcb99bde-95ef-4faf-aeaa-5476263d30f6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""c4af8c65-d0af-4053-92af-f17e7923ba8a"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""EnemyGenerator"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -160,6 +188,9 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
         m_Player_Bootster = m_Player.FindAction("Bootster", throwIfNotFound: true);
+        // Enemy
+        m_Enemy = asset.FindActionMap("Enemy", throwIfNotFound: true);
+        m_Enemy_EnemyGenerator = m_Enemy.FindAction("EnemyGenerator", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -264,6 +295,39 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
+
+    // Enemy
+    private readonly InputActionMap m_Enemy;
+    private IEnemyActions m_EnemyActionsCallbackInterface;
+    private readonly InputAction m_Enemy_EnemyGenerator;
+    public struct EnemyActions
+    {
+        private @PlayerInputAction m_Wrapper;
+        public EnemyActions(@PlayerInputAction wrapper) { m_Wrapper = wrapper; }
+        public InputAction @EnemyGenerator => m_Wrapper.m_Enemy_EnemyGenerator;
+        public InputActionMap Get() { return m_Wrapper.m_Enemy; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(EnemyActions set) { return set.Get(); }
+        public void SetCallbacks(IEnemyActions instance)
+        {
+            if (m_Wrapper.m_EnemyActionsCallbackInterface != null)
+            {
+                @EnemyGenerator.started -= m_Wrapper.m_EnemyActionsCallbackInterface.OnEnemyGenerator;
+                @EnemyGenerator.performed -= m_Wrapper.m_EnemyActionsCallbackInterface.OnEnemyGenerator;
+                @EnemyGenerator.canceled -= m_Wrapper.m_EnemyActionsCallbackInterface.OnEnemyGenerator;
+            }
+            m_Wrapper.m_EnemyActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @EnemyGenerator.started += instance.OnEnemyGenerator;
+                @EnemyGenerator.performed += instance.OnEnemyGenerator;
+                @EnemyGenerator.canceled += instance.OnEnemyGenerator;
+            }
+        }
+    }
+    public EnemyActions @Enemy => new EnemyActions(this);
     private int m_NewcontrolschemeSchemeIndex = -1;
     public InputControlScheme NewcontrolschemeScheme
     {
@@ -287,5 +351,9 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnFire(InputAction.CallbackContext context);
         void OnBootster(InputAction.CallbackContext context);
+    }
+    public interface IEnemyActions
+    {
+        void OnEnemyGenerator(InputAction.CallbackContext context);
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -16,21 +17,28 @@ public class Player : MonoBehaviour // 따로 함수만들어서 드래그해 �
     //Action<int> del3; // 리턴타입이 void, 파라메터는 int 하나인 델리게이트 del3을 만듬
     //Func<int, float> del14; // 리턴타입이 int고 파라메터는 float 하나인 델리게이트 del4를 만듬
 
+
     public GameObject Bullet;
+    public float fireInterval = 0.5f;
 
     float speed = 2.0f; //플레이어의 이동속도(초당 이동 속도)
     Vector3 dir; // 이동방향(입력에 따라 변경됨)
     Rigidbody2D rigid;
     float booster = 1.0f;
+    //bool isFiring = false;
+    //float fireTimeCount = 0.0f;
 
     Animator anim;
+
+    IEnumerator fireCoroutine;
 
     private void Awake() // 이 스크립트가 들어있는 게임 오브젝트가 생성된 직후 
     {                   // -> 1순위로 실행
         inputActions = new PlayerInputAction();
         rigid = GetComponent<Rigidbody2D>(); // 한번만 찾고 저장해서 계속 쓰기(메모리 더쓰고 성능아끼기)
         anim = GetComponent<Animator>(); //GetComponent 는 반드시 중요!! 애니메이터 찾아오는것
-    
+
+        fireCoroutine = Fire();
     }
 
     private void OnEnable() // 이 스크립트가 들어있는 게임 오브젝트가 활성화(체크되어있을때) 되었을때 호출
@@ -38,7 +46,8 @@ public class Player : MonoBehaviour // 따로 함수만들어서 드래그해 �
         inputActions.Player.Enable();// 오브젝트가 생성되면 입력을 받도록 활성화
         inputActions.Player.Move.performed += OnMove; // performed 일때 OnMove 함수 실행하도록 연결
         inputActions.Player.Move.canceled += OnMove;  // canceled 일때 OnMove 함수 실행하도록 연결
-        inputActions.Player.Fire.performed += OnFire; // 플레이할때 스페이스 치면 디버그 출력
+        inputActions.Player.Fire.performed += OnFireStart; // 플레이할때 스페이스 치면 디버그 출력
+        inputActions.Player.Fire.canceled += OnFireStop;
         inputActions.Player.Bootster.performed += OnBooster;
         inputActions.Player.Bootster.canceled += OffBooster;
     }
@@ -51,7 +60,8 @@ public class Player : MonoBehaviour // 따로 함수만들어서 드래그해 �
     {//일일이 함수 기능 만들어 주고 코딩해준 다음 반드시 여기도 넣어줘야된다! 안전성위해!
        // inputActions.Player.Bootster.performed -= OffBooster;
         //inputActions.Player.Bootster.performed -= OnBooster;     
-        inputActions.Player.Fire.performed -= OnFire;
+        inputActions.Player.Fire.performed -= OnFireStart;
+        inputActions.Player.Fire.canceled -= OnFireStop;
         inputActions.Player.Move.canceled -= OnMove; // 연결해 놓은 함수 해제(안전을 위해)
         inputActions.Player.Move.performed -= OnMove; //
         inputActions.Player.Disable(); // 오브젝트가 사라질때 더이상 입력을 받지 않도록 비활성화
@@ -66,6 +76,7 @@ public class Player : MonoBehaviour // 따로 함수만들어서 드래그해 �
     {
         //transform.position += (speed * Time.deltaTime * dir);
         
+        
     }
     private void FixedUpdate() // 일정시간간격(물리업데이트 시간간격)으로 호출
     {
@@ -79,6 +90,15 @@ public class Player : MonoBehaviour // 따로 함수만들어서 드래그해 �
         rigid.MovePosition(transform.position + booster *speed * Time.fixedDeltaTime * dir);
         //관성 없는 움직임 할때 유용
         // 처음에 부스터랑 스피드가 1이면 변화가 없다 그러나 부스터 변경되는 순간 2배로 변해서 이동속도 변화...
+
+        //fireTimeCount += Time.fixedDeltaTime;
+        
+        //if (isFiring && fireTimeCount > fireInterval)
+        //{
+        //    Instantiate(Bullet, transform.position, Quaternion.identity);
+        //    fireTimeCount = 0.0f;
+        //}
+
     }
 
     private void OnCollisionExit2D(Collision2D collision) // Collider와 접촉이 떨어지는 순간
@@ -89,22 +109,13 @@ public class Player : MonoBehaviour // 따로 함수만들어서 드래그해 �
     {
         Debug.Log("OnCollisionEnter2D"); // Collider와 부딪쳤을 때 실행
     }
-    private void OnCollisionStay2D(Collision2D collision) //Collider 와 계속 접촉하면서 움직일 때(매 프레임마다 호출)
-    {
-        Debug.Log("OnCollisionStay2D"); 
-    }
-
+    
     private void OnTriggerEnter2D(Collider2D collision) // 트리거와 들어갔을 때 실행
     {
         Debug.Log("OnTriggerEnter2D");
     }
 
-    private void OnTriggerStay2D(Collider2D collision) // 트리거와 계속 겹쳐있으면서 움질일 때 (매 프레임마다 호출)
-    {
-
-        Debug.Log("OnTriggerStay2D");
-    }
-
+   
     private void OnTriggerExit2D(Collider2D collision)// 트리거에서 나갔을 때 실행
     {
         Debug.Log("OnTriggerExit2D");
@@ -127,13 +138,38 @@ public class Player : MonoBehaviour // 따로 함수만들어서 드래그해 �
         // Input Y 가 0보다 크거나 작은거 가 적용 될려면 dir.y 값이 입력되야됨
         // 결과적으로 InputY 값이 조절되어 애니메이션 기능이 작동됨! 
     }
-    private void OnFire(InputAction.CallbackContext context)
+    private void OnFireStart(InputAction.CallbackContext context) // 안쓰는거면 매개변수 _ 로 표시
     {
-        float value = Random.Range(0.0f, 10.0f);// value에는 0.0 ~ 10.0 의 랜덤값이 들어간다.
-        Debug.Log("발사!");
-        Instantiate(Bullet, transform.position, Quaternion.identity);
+        //float value = Random.Range(0.0f, 10.0f);// value에는 0.0 ~ 10.0 의 랜덤값이 들어간다.
+        //Debug.Log("발사!");
+        //Instantiate(Bullet, transform.position, Quaternion.identity);
+
+        //isFiring = true;
+        StartCoroutine(fireCoroutine);
+    }
+    private void OnFireStop(InputAction.CallbackContext _) {
+
+        //isFiring = false;
+        //StopAllCoroutines();
+        StopCoroutine(fireCoroutine);
+
+    }// 안쓰는거면 매개변수 _ 로 표시
+
+    IEnumerator Fire()
+    {
+        // yield return null; // 다음 프레임에 이어서 시작해라
+
+
+        //yield return new WaitForSeconds(1.0f); // 1초 후에 이어서 시작해라
+
+        while (true) {
+
+            Instantiate(Bullet, transform.position, Quaternion.identity);
+            yield return new WaitForSeconds(fireInterval);
+        }
 
     }
+
     private void OnBooster(InputAction.CallbackContext obj)
     {
         //Throw new NotImplementedException();

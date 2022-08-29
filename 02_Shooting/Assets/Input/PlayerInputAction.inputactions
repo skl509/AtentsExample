@@ -112,6 +112,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Enemy",
+            "id": "41eb1495-6528-4662-8729-bdddc759717b",
+            "actions": [
+                {
+                    "name": "EnemyGenerator",
+                    "type": "Button",
+                    "id": "fcb99bde-95ef-4faf-aeaa-5476263d30f6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "c4af8c65-d0af-4053-92af-f17e7923ba8a",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "EnemyGenerator",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [
