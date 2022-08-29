@@ -18,7 +18,8 @@ public class EnemySponer : MonoBehaviour
     PlayerInputAction inputActions;
     public GameObject enemy; // 생성할 적의 프리팹
     public float interval = 0.5f; // 시간 
-    float delta = 0;
+    float minY = -4.5f; // 스폰이 일어나는 최저 높이
+    float maxY =  4.5f; // 스폰이 일어나는 최고 높이
 
     private void Start()
     {
@@ -31,10 +32,9 @@ public class EnemySponer : MonoBehaviour
 
         while (true)
         {
-            Instantiate(enemy, transform); // 자기 자신을 생성하는 것 , transform 자기자신위치
-            int px = Random.Range(-10, 10 + 1);
-            enemy.transform.position = new Vector3(px, 0, 0);
-            yield return new WaitForSeconds(interval);
+            GameObject obj = Instantiate(enemy, transform); // 자기 자신을 생성하는 것 , transform 자기자신위치
+            obj.transform.Translate(0, Random.Range(minY, maxY), 0); // 스폰 생성 범위 안에서 랜덤으로 높이 정하기
+            yield return new WaitForSeconds(interval); // interval만큼 대기
         }
 
     }
