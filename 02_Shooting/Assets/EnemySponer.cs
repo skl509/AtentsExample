@@ -1,6 +1,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.Rendering;
@@ -18,8 +19,8 @@ public class EnemySponer : MonoBehaviour
     PlayerInputAction inputActions;
     public GameObject enemy; // 생성할 적의 프리팹
     public float interval = 0.5f; // 시간 
-    float minY = -4.5f; // 스폰이 일어나는 최저 높이
-    float maxY =  4.5f; // 스폰이 일어나는 최고 높이
+    float minY = -4.0f; // 스폰이 일어나는 최저 높이
+    float maxY = 4.0f; // 스폰이 일어나는 최고 높이
 
     private void Start()
     {
@@ -37,7 +38,24 @@ public class EnemySponer : MonoBehaviour
             yield return new WaitForSeconds(interval); // interval만큼 대기
         }
 
+
+
+
     }
+    private void OnDrawGizmos()
+    {
+        // Gizmos.color = new Color(1,0,0);
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireCube(transform.position, new(1, Mathf.Abs(maxY) + Mathf.Abs(minY)+2, 1)); //내 주변 중심으로 가로 두칸 새로 5칸 z로 1칸 영역만든다
+       // Gizmos.DrawCube(transform.position, new(2, 6, 1));
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+
+    }
+
+
 
 
 
