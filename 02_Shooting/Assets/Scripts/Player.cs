@@ -23,11 +23,12 @@ public class Player : MonoBehaviour
     //bool isFiring = false;
     //float fireTimeCount = 0.0f;
 
+    Transform Transform;
     IEnumerator fireCoroutine;
 
     Rigidbody2D rigid;
     Animator anim;
-
+    Transform FirePosition;
     PlayerInputAction inputActions;
     // Awake -> OnEnable -> Start : 대체적으로 이 순서
 
@@ -40,6 +41,7 @@ public class Player : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();    // 한번만 찾고 저장해서 계속 쓰기(메모리 더 쓰고 성능 아끼기)
         anim = GetComponent<Animator>();
         fireCoroutine = Fire();
+        FirePosition = transform.GetChild(0);
     }
 
     /// <summary>
@@ -171,7 +173,7 @@ public class Player : MonoBehaviour
 
         while (true)
         {
-            Instantiate(bullet, transform.position, Quaternion.identity);
+            Instantiate(bullet, FirePosition.position, Quaternion.identity); // FirePosition 앞에서 발사된다.
             yield return new WaitForSeconds(fireInterval);
         }
     }
