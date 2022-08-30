@@ -3,12 +3,12 @@
     "maps": [
         {
             "name": "Player",
-            "id": "3456fdde-5285-48b3-ba3d-9954539d4d69",
+            "id": "7ce5ac96-af0f-4f4e-a223-4e0efe3a7447",
             "actions": [
                 {
                     "name": "Move",
                     "type": "Value",
-                    "id": "3efc857d-37e8-4721-8d00-c8de21514c4c",
+                    "id": "5400a8e6-3e9b-4c18-9d36-a34bb3d9ca3d",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
@@ -17,16 +17,16 @@
                 {
                     "name": "Fire",
                     "type": "Button",
-                    "id": "b2bfa09f-b3e6-413a-970e-9e91c8b6d422",
+                    "id": "f72837ee-4926-4b86-86e9-0b859d202a08",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Bootster",
+                    "name": "Boost",
                     "type": "Button",
-                    "id": "b8badb69-8479-45a1-81a9-e079e3f93b35",
+                    "id": "04b9efdb-fcea-4b41-9f32-5d404eaabca0",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -36,7 +36,7 @@
             "bindings": [
                 {
                     "name": "WASD",
-                    "id": "a43b9177-55e8-4464-81dc-d5584040cd5a",
+                    "id": "2767399a-5dc5-484d-9f6a-928abcdca821",
                     "path": "2DVector",
                     "interactions": "",
                     "processors": "",
@@ -47,7 +47,7 @@
                 },
                 {
                     "name": "up",
-                    "id": "6412230e-9423-4f7b-a8ed-bd7014271ea1",
+                    "id": "b18dc937-2a9b-48af-b0ba-3cd2c0e1515b",
                     "path": "<Keyboard>/w",
                     "interactions": "",
                     "processors": "",
@@ -58,7 +58,7 @@
                 },
                 {
                     "name": "down",
-                    "id": "fd831089-a915-4682-b392-a8e08243b094",
+                    "id": "23008d6c-fea0-4564-9133-2c07be4a7b76",
                     "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
@@ -69,7 +69,7 @@
                 },
                 {
                     "name": "left",
-                    "id": "b7ca0baf-47e7-4b27-9d41-0a617df5f5f9",
+                    "id": "339caba4-6520-43d5-86b0-367ffef2c3e1",
                     "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
@@ -80,7 +80,7 @@
                 },
                 {
                     "name": "right",
-                    "id": "00eea67d-0ebe-4d08-bf93-448ba58821c8",
+                    "id": "fe2af060-0e0a-4c2e-b8f5-a1329ee02bae",
                     "path": "<Keyboard>/d",
                     "interactions": "",
                     "processors": "",
@@ -91,7 +91,7 @@
                 },
                 {
                     "name": "",
-                    "id": "2b630a9a-358f-467c-a5db-c08772b073f9",
+                    "id": "a832045c-de45-4b3b-8865-d9e590969a92",
                     "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
@@ -102,40 +102,12 @@
                 },
                 {
                     "name": "",
-                    "id": "832533fa-3908-4cb1-8315-efb0b1199122",
-                    "path": "<Keyboard>/shift",
+                    "id": "3fd2397a-abff-417c-a6d3-108a9a213eab",
+                    "path": "<Keyboard>/leftShift",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Bootster",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "Enemy",
-            "id": "41eb1495-6528-4662-8729-bdddc759717b",
-            "actions": [
-                {
-                    "name": "EnemyGenerator",
-                    "type": "Button",
-                    "id": "fcb99bde-95ef-4faf-aeaa-5476263d30f6",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "c4af8c65-d0af-4053-92af-f17e7923ba8a",
-                    "path": "<Keyboard>/enter",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "EnemyGenerator",
+                    "action": "Boost",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -143,11 +115,6 @@
         }
     ],
     "controlSchemes": [
-        {
-            "name": "New control scheme",
-            "bindingGroup": "New control scheme",
-            "devices": []
-        },
         {
             "name": "Keyboard",
             "bindingGroup": "Keyboard",

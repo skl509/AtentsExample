@@ -25,12 +25,12 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
     ""maps"": [
         {
             ""name"": ""Player"",
-            ""id"": ""3456fdde-5285-48b3-ba3d-9954539d4d69"",
+            ""id"": ""7ce5ac96-af0f-4f4e-a223-4e0efe3a7447"",
             ""actions"": [
                 {
                     ""name"": ""Move"",
                     ""type"": ""Value"",
-                    ""id"": ""3efc857d-37e8-4721-8d00-c8de21514c4c"",
+                    ""id"": ""5400a8e6-3e9b-4c18-9d36-a34bb3d9ca3d"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -39,16 +39,16 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Fire"",
                     ""type"": ""Button"",
-                    ""id"": ""b2bfa09f-b3e6-413a-970e-9e91c8b6d422"",
+                    ""id"": ""f72837ee-4926-4b86-86e9-0b859d202a08"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Bootster"",
+                    ""name"": ""Boost"",
                     ""type"": ""Button"",
-                    ""id"": ""b8badb69-8479-45a1-81a9-e079e3f93b35"",
+                    ""id"": ""04b9efdb-fcea-4b41-9f32-5d404eaabca0"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -58,7 +58,7 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
             ""bindings"": [
                 {
                     ""name"": ""WASD"",
-                    ""id"": ""a43b9177-55e8-4464-81dc-d5584040cd5a"",
+                    ""id"": ""2767399a-5dc5-484d-9f6a-928abcdca821"",
                     ""path"": ""2DVector"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -69,7 +69,7 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""up"",
-                    ""id"": ""6412230e-9423-4f7b-a8ed-bd7014271ea1"",
+                    ""id"": ""b18dc937-2a9b-48af-b0ba-3cd2c0e1515b"",
                     ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -80,7 +80,7 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""down"",
-                    ""id"": ""fd831089-a915-4682-b392-a8e08243b094"",
+                    ""id"": ""23008d6c-fea0-4564-9133-2c07be4a7b76"",
                     ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -91,7 +91,7 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""left"",
-                    ""id"": ""b7ca0baf-47e7-4b27-9d41-0a617df5f5f9"",
+                    ""id"": ""339caba4-6520-43d5-86b0-367ffef2c3e1"",
                     ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -102,7 +102,7 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""right"",
-                    ""id"": ""00eea67d-0ebe-4d08-bf93-448ba58821c8"",
+                    ""id"": ""fe2af060-0e0a-4c2e-b8f5-a1329ee02bae"",
                     ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -113,7 +113,7 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""2b630a9a-358f-467c-a5db-c08772b073f9"",
+                    ""id"": ""a832045c-de45-4b3b-8865-d9e590969a92"",
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -124,40 +124,12 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""832533fa-3908-4cb1-8315-efb0b1199122"",
-                    ""path"": ""<Keyboard>/shift"",
+                    ""id"": ""3fd2397a-abff-417c-a6d3-108a9a213eab"",
+                    ""path"": ""<Keyboard>/leftShift"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
-                    ""action"": ""Bootster"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                }
-            ]
-        },
-        {
-            ""name"": ""Enemy"",
-            ""id"": ""41eb1495-6528-4662-8729-bdddc759717b"",
-            ""actions"": [
-                {
-                    ""name"": ""EnemyGenerator"",
-                    ""type"": ""Button"",
-                    ""id"": ""fcb99bde-95ef-4faf-aeaa-5476263d30f6"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""c4af8c65-d0af-4053-92af-f17e7923ba8a"",
-                    ""path"": ""<Keyboard>/enter"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard"",
-                    ""action"": ""EnemyGenerator"",
+                    ""action"": ""Boost"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -165,11 +137,6 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
         }
     ],
     ""controlSchemes"": [
-        {
-            ""name"": ""New control scheme"",
-            ""bindingGroup"": ""New control scheme"",
-            ""devices"": []
-        },
         {
             ""name"": ""Keyboard"",
             ""bindingGroup"": ""Keyboard"",
@@ -187,10 +154,7 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
-        m_Player_Bootster = m_Player.FindAction("Bootster", throwIfNotFound: true);
-        // Enemy
-        m_Enemy = asset.FindActionMap("Enemy", throwIfNotFound: true);
-        m_Enemy_EnemyGenerator = m_Enemy.FindAction("EnemyGenerator", throwIfNotFound: true);
+        m_Player_Boost = m_Player.FindAction("Boost", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -252,14 +216,14 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
     private IPlayerActions m_PlayerActionsCallbackInterface;
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Fire;
-    private readonly InputAction m_Player_Bootster;
+    private readonly InputAction m_Player_Boost;
     public struct PlayerActions
     {
         private @PlayerInputAction m_Wrapper;
         public PlayerActions(@PlayerInputAction wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Fire => m_Wrapper.m_Player_Fire;
-        public InputAction @Bootster => m_Wrapper.m_Player_Bootster;
+        public InputAction @Boost => m_Wrapper.m_Player_Boost;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -275,9 +239,9 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                 @Fire.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire;
                 @Fire.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire;
                 @Fire.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire;
-                @Bootster.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBootster;
-                @Bootster.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBootster;
-                @Bootster.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBootster;
+                @Boost.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBoost;
+                @Boost.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBoost;
+                @Boost.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBoost;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -288,55 +252,13 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                 @Fire.started += instance.OnFire;
                 @Fire.performed += instance.OnFire;
                 @Fire.canceled += instance.OnFire;
-                @Bootster.started += instance.OnBootster;
-                @Bootster.performed += instance.OnBootster;
-                @Bootster.canceled += instance.OnBootster;
+                @Boost.started += instance.OnBoost;
+                @Boost.performed += instance.OnBoost;
+                @Boost.canceled += instance.OnBoost;
             }
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
-
-    // Enemy
-    private readonly InputActionMap m_Enemy;
-    private IEnemyActions m_EnemyActionsCallbackInterface;
-    private readonly InputAction m_Enemy_EnemyGenerator;
-    public struct EnemyActions
-    {
-        private @PlayerInputAction m_Wrapper;
-        public EnemyActions(@PlayerInputAction wrapper) { m_Wrapper = wrapper; }
-        public InputAction @EnemyGenerator => m_Wrapper.m_Enemy_EnemyGenerator;
-        public InputActionMap Get() { return m_Wrapper.m_Enemy; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(EnemyActions set) { return set.Get(); }
-        public void SetCallbacks(IEnemyActions instance)
-        {
-            if (m_Wrapper.m_EnemyActionsCallbackInterface != null)
-            {
-                @EnemyGenerator.started -= m_Wrapper.m_EnemyActionsCallbackInterface.OnEnemyGenerator;
-                @EnemyGenerator.performed -= m_Wrapper.m_EnemyActionsCallbackInterface.OnEnemyGenerator;
-                @EnemyGenerator.canceled -= m_Wrapper.m_EnemyActionsCallbackInterface.OnEnemyGenerator;
-            }
-            m_Wrapper.m_EnemyActionsCallbackInterface = instance;
-            if (instance != null)
-            {
-                @EnemyGenerator.started += instance.OnEnemyGenerator;
-                @EnemyGenerator.performed += instance.OnEnemyGenerator;
-                @EnemyGenerator.canceled += instance.OnEnemyGenerator;
-            }
-        }
-    }
-    public EnemyActions @Enemy => new EnemyActions(this);
-    private int m_NewcontrolschemeSchemeIndex = -1;
-    public InputControlScheme NewcontrolschemeScheme
-    {
-        get
-        {
-            if (m_NewcontrolschemeSchemeIndex == -1) m_NewcontrolschemeSchemeIndex = asset.FindControlSchemeIndex("New control scheme");
-            return asset.controlSchemes[m_NewcontrolschemeSchemeIndex];
-        }
-    }
     private int m_KeyboardSchemeIndex = -1;
     public InputControlScheme KeyboardScheme
     {
@@ -350,10 +272,6 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnFire(InputAction.CallbackContext context);
-        void OnBootster(InputAction.CallbackContext context);
-    }
-    public interface IEnemyActions
-    {
-        void OnEnemyGenerator(InputAction.CallbackContext context);
+        void OnBoost(InputAction.CallbackContext context);
     }
 }
