@@ -28,7 +28,7 @@ public class Player : MonoBehaviour
 
     Rigidbody2D rigid;
     Animator anim;
-    Transform FirePosition;
+    Transform[] FirePosition;
     PlayerInputAction inputActions;
     // Awake -> OnEnable -> Start : 대체적으로 이 순서
 
@@ -40,10 +40,15 @@ public class Player : MonoBehaviour
         inputActions = new PlayerInputAction();
         rigid = GetComponent<Rigidbody2D>();    // 한번만 찾고 저장해서 계속 쓰기(메모리 더 쓰고 성능 아끼기)
         anim = GetComponent<Animator>();
-        fireCoroutine = Fire();
-        FirePosition = transform.GetChild(0);
-    }
+        
+        FirePosition = new Transform[transform.childCount]; // 파이어 포지션에 자식의 요소 호출하기...
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            FirePosition[i] = transform.GetChild(i);
+        }
 
+        fireCoroutine = Fire();
+    }
     /// <summary>
     /// 이 스크립트가 들어있는 게임 오브젝트가 활성화 되었을때 호출
     /// </summary>
@@ -173,9 +178,29 @@ public class Player : MonoBehaviour
 
         while (true)
         {
-            Instantiate(bullet, FirePosition.position, Quaternion.identity); // FirePosition 앞에서 발사된다.
+            for (int i = 0; i < FirePosition.Length; i++)
+            {   
+                
+                //Instantiate(bullet, FirePosition[i].position, Quaternion.identity);
+                // 오브젝트화 만들어서 컴포넌트로 접근... 컴포넌트에 회적값을 적용시켜준다.
+                GameObject obj = Instantiate(bullet, FirePosition[i].position, Quaternion.identity);
+                //Instantiate(생성할 프리팹); // 프리팹이 (0,0,0)위치에 (0,0,0)회전에 (1,1,1)스케일로 적용하기
+                //Instantiate(생성할 프리팹, 생성할 위치, 생성될 때의 회전)
+                // Bullet dlfksms 프리팹을 FirePosition[i].position의 위치에 (0,0,0) 회전으로 만들어라
+                
+                obj.transform.rotation = FirePosition[i].rotation;
+                // fire 포지션의 현재 각도로 생성! 
+                //총알 회전 값으로 FirePosition[i]회전값을 그대로 이용한다.
+                //GameObject obj = Instantiate(bullet, FirePosition[i].position, FirePosition[i].rotation);
+                //ㄴ오브젝트 생성후 프리팹생성오브젝트,프리팹위치정보,프리팹회전정보 설정한대로 그대로 생성
+                //Quaternion.Euler(0, 0, 30); // x축, y축, z축 으로 회전하는 코드... 
+            }
+
+            
+            // FirePosition 앞에서 발사된다.
             yield return new WaitForSeconds(fireInterval);
         }
+            
     }
 
     private void OnBoostOn(InputAction.CallbackContext context)
