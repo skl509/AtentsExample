@@ -52,6 +52,7 @@ public class Asteroid : MonoBehaviour
     private void Start()
     {
         explosion = transform.GetChild(0).gameObject;
+        StartCoroutine(Dead());
     }
 
     void Update()
@@ -62,13 +63,13 @@ public class Asteroid : MonoBehaviour
         transform.Rotate(rotateSpeed * Time.deltaTime * Vector3.forward);   // Vector3.forward 축을 기준으로 1초에 rotateSpeed도씩 회전
 
         transform.Translate(moveSpeed * Time.deltaTime * direction, Space.World);
-        StartCoroutine(Dead());
+       
 
     }
     IEnumerator Dead()
     {
         float r1 = Random.Range(3.0f, 5.0f);
-        yield return new WaitForSeconds(r1);
+        yield return new WaitForSeconds(r1); // 지정된 시간 후에 뒤에 함수실행한다.
         Crush();
         
     }
@@ -97,7 +98,7 @@ public class Asteroid : MonoBehaviour
         explosion.SetActive(true);
         explosion.transform.parent = null;
         float angleGap = 360.0f / (float)splitCount;
-        float r = Random.Range(100.0f, 200.0f);
+        float r = Random.Range(15.0f, 35.0f);
         for (int i = 0; i < splitCount; i++)
         {
             if (i == 0) {
