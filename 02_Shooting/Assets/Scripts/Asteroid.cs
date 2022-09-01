@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.VFX;
 
 public class Asteroid : MonoBehaviour
 {
@@ -10,6 +13,29 @@ public class Asteroid : MonoBehaviour
     public int hitPoint = 3;
 
     GameObject explosion;
+    SpriteRenderer renderer;
+    
+
+    private void Awake()
+    {
+     
+        renderer = GetComponent<SpriteRenderer>();
+       
+       renderer.flipY = true;
+       renderer.flipX = false;
+
+        int r = Random.Range(0, 4);
+        renderer.flipX = ((r & 0b_01) != 0); 
+        // ((r & 0b_01)  : r의 제일 오른쪽 비트가 0인지 1인지 확인하는 작업!
+        //((r & 0b_01) != 0 : r의 제일 오른쪽 비트가 1이면 true, 0이면 false
+        renderer.flipY = ((r & 0b_10) != 0);
+        // ((r & 0b_10)  : r의 제일 오른쪽에서 두번째 비트가 0인지 1인지 확인하는 작업
+        // ((r & 0b_10) != 0 : r의 제일 오른쪽에서 두번째 비트가 1이면 true, 0이면 false
+    
+        moveSpeed = Random.Range(2.0f, 4.0f);
+        rotateSpeed = Random.Range(30.0f, 360f);
+
+    }
 
     private void Start()
     {
