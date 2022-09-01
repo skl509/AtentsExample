@@ -23,12 +23,14 @@ public class Player : MonoBehaviour
     //bool isFiring = false;
     //float fireTimeCount = 0.0f;
 
-    Transform Transform;
+    Transform[] firePosition;   // 트랜스폼을 여러개 가지는 배열
+    public GameObject flash;
+
     IEnumerator fireCoroutine;
 
     Rigidbody2D rigid;
     Animator anim;
-    Transform[] FirePosition;
+
     PlayerInputAction inputActions;
     // Awake -> OnEnable -> Start : 대체적으로 이 순서
 
@@ -40,15 +42,17 @@ public class Player : MonoBehaviour
         inputActions = new PlayerInputAction();
         rigid = GetComponent<Rigidbody2D>();    // 한번만 찾고 저장해서 계속 쓰기(메모리 더 쓰고 성능 아끼기)
         anim = GetComponent<Animator>();
-        
-        FirePosition = new Transform[transform.childCount]; // 파이어 포지션에 자식의 요소 호출하기...
-        for (int i = 0; i < transform.childCount; i++)
+
+        firePosition = new Transform[transform.childCount-1];
+        for( int i=0; i<transform.childCount-1; i++)
         {
-            FirePosition[i] = transform.GetChild(i);
+            firePosition[i] = transform.GetChild(i);
         }
+        //flash = transform.GetChild(transform.childCount - 1).gameObject;
 
         fireCoroutine = Fire();
     }
+
     /// <summary>
     /// 이 스크립트가 들어있는 게임 오브젝트가 활성화 되었을때 호출
     /// </summary>
@@ -178,29 +182,40 @@ public class Player : MonoBehaviour
 
         while (true)
         {
-            for (int i = 0; i < FirePosition.Length; i++)
-            {   
-                
-                //Instantiate(bullet, FirePosition[i].position, Quaternion.identity);
-                // 오브젝트화 만들어서 컴포넌트로 접근... 컴포넌트에 회적값을 적용시켜준다.
-                GameObject obj = Instantiate(bullet, FirePosition[i].position, Quaternion.identity);
-                //Instantiate(생성할 프리팹); // 프리팹이 (0,0,0)위치에 (0,0,0)회전에 (1,1,1)스케일로 적용하기
-                //Instantiate(생성할 프리팹, 생성할 위치, 생성될 때의 회전)
-                // Bullet dlfksms 프리팹을 FirePosition[i].position의 위치에 (0,0,0) 회전으로 만들어라
-                
-                obj.transform.rotation = FirePosition[i].rotation;
-                // fire 포지션의 현재 각도로 생성! 
-                //총알 회전 값으로 FirePosition[i]회전값을 그대로 이용한다.
-                //GameObject obj = Instantiate(bullet, FirePosition[i].position, FirePosition[i].rotation);
-                //ㄴ오브젝트 생성후 프리팹생성오브젝트,프리팹위치정보,프리팹회전정보 설정한대로 그대로 생성
-                //Quaternion.Euler(0, 0, 30); // x축, y축, z축 으로 회전하는 코드... 
-            }
+            for(int i=0;i<firePosition.Length;i++)
+            {
+                // bullet이라는 프리팹을 firePosition[i]의 위치에 (0,0,0) 회전으로 만들어라
+                //GameObject bulletInstance = Instantiate(bullet, firePosition[i].position, Quaternion.identity);
 
-            
-            // FirePosition 앞에서 발사된다.
+                // bullet이라는 프리팹을 firePosition[i]의 위치에 firePosition[i]의 회전으로 만들어라
+                GameObject bulletInstance = Instantiate(bullet, firePosition[i].position, firePosition[i].rotation);
+
+                // Instantiate(생성할 프리팹);    // 프리팹이 (0,0,0)위치에 (0,0,0)회전에 (1,1,1)스케일로 만들어짐 
+                // Instantiate(생성할 프리팹, 생성할 위치, 생성될 때의 회전)
+
+                //obj.transform;
+                // 힌트1. Instantiate의 파라메터가 가지는 의미를 생각할 것
+                // 힌트2. Instantiate의 결과로 받아오는 GameObject를 활용하는 방법을 생각할 것
+
+                // 총알의 회전 값으로 firePosition[i]의 회전값을 그대로 사용한다.
+                //bulletInstance.transform.rotation = firePosition[i].rotation;
+
+                //Vector3 angle = firePosition[i].rotation.eulerAngles; // 현재 회전 값을 x,y,z축별로 몇도씩 회전했는지 확인 가능
+                //Quaternion.Euler(10, 20, 30);     // x축으로 10도, y축으로 20도, z축으로 30도 회전하는 코드
+
+                //Time.timeScale = 0.0f;
+            }
+            flash.SetActive(true);
+            StartCoroutine(FlashOff());
+
             yield return new WaitForSeconds(fireInterval);
         }
-            
+    }
+
+    IEnumerator FlashOff()
+    {
+        yield return new WaitForSeconds(0.1f);
+        flash.SetActive(false);
     }
 
     private void OnBoostOn(InputAction.CallbackContext context)

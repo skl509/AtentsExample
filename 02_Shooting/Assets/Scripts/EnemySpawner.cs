@@ -9,7 +9,7 @@ public class EnemySpawner : MonoBehaviour
 {
     // 필요한 변수가 무엇인가? -> Enemy 프리팹, 지속적으로 동작을 하는 시간 간격
     
-    public GameObject spawnPrefab;        // 생성할 적의 프리팹
+    public GameObject spawnPrefab;  // 생성할 적의 프리팹
     public float interval = 0.5f;   // 생성할 시간 간격
 
     protected float minY = -4.0f;     // 스폰이 일어나는 최저 높이
