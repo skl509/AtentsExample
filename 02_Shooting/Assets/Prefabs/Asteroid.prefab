@@ -75,7 +75,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -993752807
-  m_SortingLayer: 2
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 085dc9b92d7064f24868ea4e8f8919a2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -102,6 +102,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotateSpeed: 360
   moveSpeed: 1.5
+  minMoveSpeed: 2
+  maxMoveSpeed: 4
+  minRotateSpeed: 30
+  maxRotateSpeed: 360
+  small: {fileID: 7382651803514891253, guid: c52279fd87c505548a94680c6f24251e, type: 3}
+  splitCount: 3
   direction: {x: -1, y: 0, z: 0}
   hitPoint: 3
 --- !u!50 &1458882668817415426
