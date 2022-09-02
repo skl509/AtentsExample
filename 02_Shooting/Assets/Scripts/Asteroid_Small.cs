@@ -11,8 +11,9 @@ public class Asteroid_Small : MonoBehaviour
     {
         SpriteRenderer sprite = GetComponent<SpriteRenderer>();
         int rand = Random.Range(0, 4);
-        sprite.flipX = ((rand & 0b_01) != 0); // ((r & 0b_01)  : r의 제일 오른쪽 비트가 0인지 1인지 확인하는 작업!
-        sprite.flipY = ((rand & 0b_10) != 0); //((r & 0b_01) != 0 : r의 제일 오른쪽 비트가 1이면 true, 0이면 false
+        sprite.flipX = ((rand & 0b_01) != 0);
+        sprite.flipY = ((rand & 0b_10) != 0);
+
         explosion = transform.GetChild(0).gameObject;
     }
 
@@ -25,7 +26,7 @@ public class Asteroid_Small : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Bullet"))
         {
-            if (explosion != null)
+            if(explosion != null)
             {
                 explosion.transform.parent = null;
                 explosion.SetActive(true);
