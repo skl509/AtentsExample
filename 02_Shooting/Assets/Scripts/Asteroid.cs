@@ -68,7 +68,7 @@ public class Asteroid : MonoBehaviour
     }
     IEnumerator Dead()
     {
-        float r1 = Random.Range(3.0f, 5.0f);
+        float r1 = Random.Range(4.0f, 6.0f);
         yield return new WaitForSeconds(r1); // 지정된 시간 후에 뒤에 함수실행한다.
         Crush();
         
@@ -97,6 +97,14 @@ public class Asteroid : MonoBehaviour
     {
         explosion.SetActive(true);
         explosion.transform.parent = null;
+        if (Random.Range(0.0f, 1.0f) < 0.05f) //5% 확률로 와장창 나온다...
+        {
+            splitCount = 20;
+        }
+        else 
+        {
+            splitCount = Random.Range(3, 10);
+        }
         float angleGap = 360.0f / (float)splitCount;
         float r = Random.Range(15.0f, 35.0f);
         for (int i = 0; i < splitCount; i++)
