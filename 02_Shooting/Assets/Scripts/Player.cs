@@ -23,36 +23,40 @@ public class Player : MonoBehaviour
     //bool isFiring = false;
     //float fireTimeCount = 0.0f;
 
-    Transform firePositionRoot;   // 트랜스폼을 여러개 가지는 배열
+    Transform firePositionRoot;
     GameObject flash;
 
     float fireAngle = 30.0f;
     int power = 0;
-    int Power // 파라메터로 만들어주기
+    int Power
     {
         get => power;
         set
         {
-            power = value;
-            if (power > 3)
+            power = value; // 들어온 값으로 파워설정
+            if (power > 3) // 파워가 3을 벗어나면 3을 제한
                 power = 3;
-
+            // 기존에 있는 파이어 포지션 제고
             while(firePositionRoot.childCount > 0)
             {
-                Transform temp = firePositionRoot.GetChild(0);
-                temp.parent = null;
-                Destroy(temp.gameObject);
+                Transform temp = firePositionRoot.GetChild(0); // firePositionRoot 의 첫번째 자식을
+                temp.parent = null; // 부모 제거하고
+                Destroy(temp.gameObject); // 삭제 시키기
             }
 
+            // 파워 등급에 맞게 새로 배치
             for(int i=0; i<power; i++)
             {
-                GameObject firePos = new GameObject();
+                GameObject firePos = new GameObject(); // 빈 오브젝트 생성하기
                 firePos.name = $"FirePosition_{i}";
-                firePos.transform.parent = firePositionRoot;
-                firePos.transform.localPosition = Vector3.zero;   // 아래줄과 같은 기능
+                firePos.transform.parent = firePositionRoot;    // firePositionRoot의 자식으로 생성
+                firePos.transform.localPosition = Vector3.zero;   // 로컬위치를(0,0,0)으로 변경, (아래줄과 같은 기능)
                 //firePos.transform.position = firePositionRoot.transform.position;
 
                 firePos.transform.rotation = Quaternion.Euler(0,0, (power - 1) * (fireAngle * 0.5f) + i * -fireAngle);
+                // 파워가 1일때 : 0도
+                // 파워가 2일때 : -15도, +15도
+                // 파워가 3일때 : -30도, 0도, +30도
                 firePos.transform.Translate(1.0f, 0, 0);
 
             }
@@ -154,10 +158,14 @@ public class Player : MonoBehaviour
         //}
     }
 
-    //private void OnCollisionEnter2D(Collision2D collision)
-    //{
-    //    Debug.Log("OnCollisionEnter2D");    // Collider와 부딪쳤을 때 실행
-    //}
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if( collision.gameObject.CompareTag("PowerUp") )
+        {
+            Power++;
+            Destroy(collision.gameObject);
+        }
+    }
 
     //private void OnCollisionExit2D(Collision2D collision)
     //{
