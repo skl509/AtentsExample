@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Processors;
 
 public class Player : MonoBehaviour
 {
@@ -16,6 +17,10 @@ public class Player : MonoBehaviour
     public GameObject bullet;
     public float speed = 1.0f;      // 플레이어의 이동 속도(초당 이동 속도)
     public float fireInterval = 0.5f;
+    public GameObject explosionPrefab;
+
+    bool isDaed = false;
+
 
     Vector3 dir;                    // 이동 방향(입력에 따라 변경됨)
     float boost = 1.0f;
@@ -83,6 +88,8 @@ public class Player : MonoBehaviour
         firePositionRoot = transform.GetChild(0);
         flash = transform.GetChild(1).gameObject;
         flash.SetActive(false);
+        
+       
 
         fireCoroutine = Fire();
     }
@@ -107,6 +114,11 @@ public class Player : MonoBehaviour
     /// </summary>
     private void OnDisable()
     {
+        InPutDisable(); // 오브젝트가 사라질때 더 이상 입력을 받지 않도록 비활성화
+    }
+
+    void InPutDisable() 
+    {
         inputActions.Player.Boost.canceled -= OnBoostOff;
         inputActions.Player.Boost.performed -= OnBoostOn;
         inputActions.Player.Fire.canceled -= OnFireStop;
@@ -114,7 +126,11 @@ public class Player : MonoBehaviour
         inputActions.Player.Move.canceled -= OnMove;    // 연결해 놓은 함수 해제(안전을 위해)
         inputActions.Player.Move.performed -= OnMove;
         inputActions.Player.Disable();  // 오브젝트가 사라질때 더 이상 입력을 받지 않도록 비활성화
+
+
+
     }
+
 
     /// <summary>
     /// 시작할 때. 첫번째 Update 함수가 실행되기 직전에 호출.
@@ -141,23 +157,30 @@ public class Player : MonoBehaviour
     /// </summary>
     private void FixedUpdate()
     {
-        //transform.Translate(speed * Time.fixedDeltaTime * dir);
+        if (!isDaed)
+        {
+            //transform.Translate(speed * Time.fixedDeltaTime * dir);
 
-        // 이 스크립트 파일이 들어 있는 게임 오브젝트에서 Rigidbody2D 컴포넌트를 찾아 리턴.(없으면 null)
-        // 그런데 GetComponent는 무거운 함수 => (Update나 FixedUpdate처럼 주기적 또는 자주 호출되는 함수 안에서는 안쓰는 것이 좋다)
-        // Rigidbody2D rigid = GetComponent<Rigidbody2D>();    
+            // 이 스크립트 파일이 들어 있는 게임 오브젝트에서 Rigidbody2D 컴포넌트를 찾아 리턴.(없으면 null)
+            // 그런데 GetComponent는 무거운 함수 => (Update나 FixedUpdate처럼 주기적 또는 자주 호출되는 함수 안에서는 안쓰는 것이 좋다)
+            // Rigidbody2D rigid = GetComponent<Rigidbody2D>();    
 
-        // rigid.AddForce(speed * Time.fixedDeltaTime * dir); // 관성이 있는 움직임을 할 때 유용
-        rigid.MovePosition(transform.position + boost * speed * Time.fixedDeltaTime * dir); // 관성이 없는 움직임을 처리할 때 유용
+            // rigid.AddForce(speed * Time.fixedDeltaTime * dir); // 관성이 있는 움직임을 할 때 유용
+            rigid.MovePosition(transform.position + boost * speed * Time.fixedDeltaTime * dir); // 관성이 없는 움직임을 처리할 때 유용
 
-        //fireTimeCount += Time.fixedDeltaTime;
-        //if ( isFiring && fireTimeCount > fireInterval )
-        //{
-        //    Instantiate(bullet, transform.position, Quaternion.identity);
-        //    fireTimeCount = 0.0f;
-        //}
+            //fireTimeCount += Time.fixedDeltaTime;
+            //if ( isFiring && fireTimeCount > fireInterval )
+            //{
+            //    Instantiate(bullet, transform.position, Quaternion.identity);
+            //    fireTimeCount = 0.0f;
+            //}
+        }
+        else 
+        {
+            rigid.AddForce(Vector2.left * 0.1f, ForceMode2D.Impulse);
+            rigid.AddTorque(10.0f);
+        }
     }
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if( collision.gameObject.CompareTag("PowerUp") )
@@ -165,7 +188,25 @@ public class Player : MonoBehaviour
             Power++;
             Destroy(collision.gameObject);
         }
+
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            
+                Daed();
+            
+        }
+
     }
+    void Daed() 
+    {
+        isDaed = true;
+        GetComponent<Collider2D>().enabled = false; // 콜라이더 체크 해제 하면 충돌안함(1회성 충돌 이펙트)...
+        Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+        InPutDisable();//입력받는거 차단으로 애니메이션 작동안함
+        rigid.gravityScale = 10.0f; // 떨어지게 만들기
+        rigid.freezeRotation = false; // 회전도 막히게 만들기
+    }
+
 
     //private void OnCollisionExit2D(Collision2D collision)
     //{

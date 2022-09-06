@@ -15,6 +15,7 @@ public class Background_Star : Background
         for (int i = 0; i < transform.childCount; i++)
         {
             spriteRenderers[i] = transform.GetChild(i).GetComponent<SpriteRenderer>();
+            // 자식의 스프라이트 렌더러를 찾기!
         }
     }
 

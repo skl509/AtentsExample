@@ -45,8 +45,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23ffeb7a676bf3d4f8545ca9027c8dbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPrefab: {fileID: 0}
+  spawnPrefab_Normal: {fileID: 2335730861659641968, guid: 8834f6556c18cd84f93abfa0f991d12b, type: 3}
+  spawnPrefab_Special: {fileID: 7859723097918025548, guid: 597d37744f3dc5249b8fc2206156ece6, type: 3}
   interval: 0.5
+  minY: -4
+  maxY: 4
 --- !u!1 &686040559259777670
 GameObject:
   m_ObjectHideFlags: 0

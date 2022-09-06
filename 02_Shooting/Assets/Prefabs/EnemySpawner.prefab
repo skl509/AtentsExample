@@ -44,5 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42713fc0e10c26348bd43045c5d3bf06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPrefab: {fileID: 8552184919623688761, guid: 9962d046cb8f3b743a8480266862ab64, type: 3}
+  spawnPrefab_Normal: {fileID: 8552184919623688761, guid: 9962d046cb8f3b743a8480266862ab64, type: 3}
+  spawnPrefab_Special: {fileID: 4313505966963245317, guid: 8347c4c3862d8ee48ae7ee6833d91bf4, type: 3}
   interval: 0.5
+  minY: -4
+  maxY: 4
