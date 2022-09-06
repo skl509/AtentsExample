@@ -157,7 +157,7 @@ public class Player : MonoBehaviour
     /// </summary>
     private void FixedUpdate()
     {
-        if (!isDaed)
+        if (!isDaed) // 만약 안죽었을때...
         {
             //transform.Translate(speed * Time.fixedDeltaTime * dir);
 
@@ -175,10 +175,10 @@ public class Player : MonoBehaviour
             //    fireTimeCount = 0.0f;
             //}
         }
-        else 
+        else //죽었을때
         {
-            rigid.AddForce(Vector2.left * 0.1f, ForceMode2D.Impulse);
-            rigid.AddTorque(10.0f);
+            rigid.AddForce(Vector2.left * 0.1f, ForceMode2D.Impulse);// 사망연출1
+            rigid.AddTorque(10.0f);//사망연출2
         }
     }
     private void OnCollisionEnter2D(Collision2D collision)
@@ -192,19 +192,19 @@ public class Player : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy"))
         {
             
-                Daed();
+                Daed(); // 적이랑 만나면 사망
             
         }
 
     }
     void Daed() 
     {
-        isDaed = true;
+        isDaed = true; // 죽었다고 표시
         GetComponent<Collider2D>().enabled = false; // 콜라이더 체크 해제 하면 충돌안함(1회성 충돌 이펙트)...
         Instantiate(explosionPrefab, transform.position, Quaternion.identity);
         InPutDisable();//입력받는거 차단으로 애니메이션 작동안함
-        rigid.gravityScale = 10.0f; // 떨어지게 만들기
-        rigid.freezeRotation = false; // 회전도 막히게 만들기
+        rigid.gravityScale = 1.0f; // 떨어지게 만들기
+        rigid.freezeRotation = false; // 회전도 막아놓은것도 해제
     }
 
 
