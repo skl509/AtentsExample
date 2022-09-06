@@ -205,6 +205,7 @@ public class Player : MonoBehaviour
         InPutDisable();//입력받는거 차단으로 애니메이션 작동안함
         rigid.gravityScale = 1.0f; // 떨어지게 만들기
         rigid.freezeRotation = false; // 회전도 막아놓은것도 해제
+        StopCoroutine(fireCoroutine); // 총을 쏘던중 죽으면 더이상 안쏜다
     }
 
 
