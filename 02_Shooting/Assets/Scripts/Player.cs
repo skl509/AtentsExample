@@ -245,7 +245,7 @@ public class Player : MonoBehaviour
 
         spriteRenderer.color = Color.white; // 원래 색으로 되돌리기
         isInvincibleMode = false;           // 무적모드 끄기
-        bodyCollider.enabled = true;        // 충돌이 다시 발생하게 만들기
+        bodyCollider.enabled = !isDead;        // 살아있을때만 충돌이 다시 발생하게 만들기...
     }
 
     /// <summary>
