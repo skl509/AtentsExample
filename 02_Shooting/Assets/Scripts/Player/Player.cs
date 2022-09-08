@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     //Action del2;                  // 리턴타입이 void, 파라메터도 없는 델리게이트 del2를 만듬
     //Action<int> del3;             // 리턴타입이 void, 파라메터는 int 하나인 델리게이트 del3을 만듬
     //Func<int, float> del4;        // 리턴타입이 int고 파라메터는 float 하나인 델리게이트 del4를 만듬
-
+    
     // public 변수(필드) ------------------------------------------------------------------------------
     [Header("플레이어 스텟")]
     /// <summary>
@@ -109,18 +109,27 @@ public class Player : MonoBehaviour
     private int power = 0;
 
     /// <summary>
+    /// 플레이어가 획득한 점수
+    /// </summary>
+    public int totalScore = 0;
+
+    private int extraPowerBonus = 1000;
+
+    /// <summary>
     /// 총알 연사용 코루틴
     /// </summary>
-    private IEnumerator fireCoroutine;
+    private IEnumerator fireCoroutine;    
 
     // 컴포넌트들 --------------------------------------------------------------------------------------
     private Rigidbody2D rigid;
     private Animator anim;
     private Collider2D bodyCollider;
     private SpriteRenderer spriteRenderer;
-    // 델리게이트 ------------------------------------------------------------------
+    private AudioSource shootAudio;
 
+    // 델리게이트 --------------------------------------------------------------------------------------
     public Action<int> onLifeChange;
+    public Action<int> onScoreChange;
 
     // 프로퍼티 ---------------------------------------------------------------------------------------
     /// <summary>
@@ -132,27 +141,29 @@ public class Player : MonoBehaviour
         //{
         //    return life;
         //}
-        get => life;    // 위의 4줄과 같은 코드 , set에 들어간 값이 get에 전달된다...
+        get => life;    // 위의 4줄과 같은 코드
         set
         {
-                // value는 지금 set하는 값
-            if (life != value) // 값에 변경이 일어났다.
+            // value는 지금 set하는 값
+            if (life != value && !isDead)  // 값에 변경이 일어났다. 그리고 살아있다.
             {
                 if (life > value)
                 {
                     // life가 감소한 상황( 새로운 값(value)이 옛날 값(life)보다 작다 => 감소했다 )
+
+                    Power--;
                     StartCoroutine(EnterInvincibleMode());
                 }
 
                 life = value;
-                if (life <= 0) // 비교범위는 가능한 크게 잡는 쪽이 안전하다.
+                if (life <= 0)  // 비교범위는 가능한 크게 잡는 쪽이 안전하다.
                 {
                     life = 0;
                     Dead();     // life 0보다 작거나 같으면 죽는다.
                 }
-                //(변수명) ?. : 왼쪽 변수가 null 이면 null, null 이 아니면 (변수명)멤버에 접근
-                onLifeChange?.Invoke(life); // 라이프가 변경될때 onLifeChange 델리게이트에 등록된 함수를 실행한다.    
 
+                // (변수명)?. : 왼쪽 변수가 null이면 null. null이 아니면 (변수명) 맴버에 접근
+                onLifeChange?.Invoke(life);  // 라이프가 변경될 때 onLifeChange 델리게이트에 등록된 함수들을 실행시킨다.
             }
         }
         //int i = Life;   // i에다가 Life의 값을 가져와서 넣어라 => Life의 get이 실행된다. i = life; 와 같은 실행 결과가 된다.
@@ -169,7 +180,10 @@ public class Player : MonoBehaviour
         {
             power = value;  // 들어온 값으로 파워 설정
             if (power > 3)  // 파워가 3을 벗어나면 3을 제한
-                power = 3;
+                AddScore(extraPowerBonus);
+            //if( power < 1)
+            //    power = 1;
+            power = Mathf.Clamp(power, 1, 3);
 
             // 기존에 있는 파이어 포지션 제거
             while (firePositionRoot.childCount > 0)
@@ -200,6 +214,15 @@ public class Player : MonoBehaviour
 
 
     // 함수(메서드) ------------------------------------------------------------------------------------    
+    public void AddScore(int score)
+    {
+        totalScore += score;
+
+        onScoreChange?.Invoke(totalScore);
+
+        // 1. 이벤트가 발생하는 곳(델리게이트 작성) -> 신호만 보내기
+        // 2. 실제 액션이 일어나는 곳(델리게이트에 함수 등록)
+    }
 
     /// <summary>
     /// 플레이어가 죽었을 때 실행될 일들
@@ -208,6 +231,7 @@ public class Player : MonoBehaviour
     {
         isDead = true;  // 죽었다고 표시
         bodyCollider.enabled = false;   // 더 이상 충돌 안일어나게 만들기
+        gameObject.layer = LayerMask.NameToLayer("Player"); // 레이어도 플레이어로 원상복구
         Instantiate(explosionPrefab, transform.position, Quaternion.identity);  // 폭팔 이팩트 생성
         InputDisable();                 // 입력 막고
         rigid.gravityScale = 1.0f;      // 중력으로 떨어지게 만들기
@@ -269,6 +293,7 @@ public class Player : MonoBehaviour
                 // Instantiate(생성할 프리팹);    // 프리팹이 (0,0,0)위치에 (0,0,0)회전에 (1,1,1)스케일로 만들어짐 
                 // Instantiate(생성할 프리팹, 생성할 위치, 생성될 때의 회전)
             }
+            shootAudio.Play();
             flash.SetActive(true);      // flash 켜고
             StartCoroutine(FlashOff()); // 0.1초 후에 flash를 끄는 코루틴 실행
 
@@ -357,10 +382,11 @@ public class Player : MonoBehaviour
         // GetComponent는 무거운 함수
         // => (Update나 FixedUpdate처럼 주기적 또는 자주 호출되는 함수 안에서는 안쓰는 것이 좋다)
         // => Awake나 Start에서 한번만 하는 것이 좋다.
-        rigid = GetComponent<Rigidbody2D>();
+        rigid = GetComponent<Rigidbody2D>();    
         anim = GetComponent<Animator>();
         bodyCollider = GetComponent<Collider2D>();  // CapsuleCollider2D가 Collider2D의 자식이라서 가능
         spriteRenderer = GetComponent<SpriteRenderer>();
+        shootAudio = GetComponent<AudioSource>();
 
         firePositionRoot = transform.GetChild(0);   // 발사 트랜스폼 찾기
         flash = transform.GetChild(1).gameObject;   // flash 가져오기
@@ -368,7 +394,7 @@ public class Player : MonoBehaviour
 
         fireCoroutine = Fire(); // 연사용 코루틴 저장
 
-        //life = initialLife;     // 생명숫자도 초기화
+        
     }
 
     /// <summary>
@@ -398,8 +424,10 @@ public class Player : MonoBehaviour
     /// </summary>
     private void Start()
     {
-        Power = 1;      // 시작할 때 파워를 1로 설정(발사 위치 갱신용)
-        Life = initialLife;
+        Power = 1;          // 시작할 때 파워를 1로 설정(발사 위치 갱신용)
+        Life = initialLife; // 생명숫자도 초기화
+        totalScore = 0;     // 점수 초기화
+        AddScore(0);        // UI 갱신용
     }
 
     /// <summary>
@@ -407,7 +435,7 @@ public class Player : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        if (isInvincibleMode)  // 무적 상태용 코드
+        if( isInvincibleMode )  // 무적 상태용 코드
         {
             timeElapsed += Time.deltaTime * 30.0f;                  // 시간의 30배 누적
             float alpha = (Mathf.Cos(timeElapsed) + 1.0f) * 0.5f;   // cos의 결과를 1~0으로 변경
@@ -423,14 +451,14 @@ public class Player : MonoBehaviour
         if (!isDead)
         {
             // rigid.AddForce(boost * speed * Time.fixedDeltaTime * dir); // 관성이 있는 움직임을 할 때 유용
-
+            
             // 관성이 없는 움직임을 처리할 때 유용
-            rigid.MovePosition(transform.position + boost * speed * Time.fixedDeltaTime * dir);
+            rigid.MovePosition(transform.position + boost * speed * Time.fixedDeltaTime * dir); 
         }
         else
         {
             // 죽었을 때의 연출용. 뒤로 돌면서 튕겨나가기
-            rigid.AddForce(Vector2.left * 0.1f, ForceMode2D.Impulse);
+            rigid.AddForce(Vector2.left * 0.1f, ForceMode2D.Impulse);   
             rigid.AddTorque(10.0f);
         }
     }
@@ -441,18 +469,18 @@ public class Player : MonoBehaviour
     /// <param name="collision"></param>
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("PowerUp"))
+        if( collision.gameObject.CompareTag("PowerUp") )
         {
             // 파워업 아이템을 먹었으면
             Power++;                        // 파워 증가 시키고
             Destroy(collision.gameObject);  // 파워업 아이템 삭제
         }
 
-        if (collision.gameObject.CompareTag("Enemy"))
+        if( collision.gameObject.CompareTag("Enemy") )
         {
             // 적이랑 부딪치면 life가 1 감소한다.
             Life--;
-
+            
             //Debug.Log($"플레이어의 Life는 {life}");
         }
     }

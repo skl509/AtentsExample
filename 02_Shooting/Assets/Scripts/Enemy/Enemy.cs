@@ -5,6 +5,8 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public float speed = 1.0f;
+    public int score = 10;
+
     GameObject explosion;
 
     float spawnY;       // 생성 되었을 때의 기준 높이
@@ -13,12 +15,17 @@ public class Enemy : MonoBehaviour
     public float amplitude = 1;     // 사인으로 변경되는 위아래 차이. 원래 sin은 -1~+1인데 그것을 변경하는 변수
     public float frequency = 1;     // 사인 그래프가 한번 도는데 걸리는 시간.
 
+    private System.Action<int> onDead;
+
     private void Start()
     {
         explosion = transform.GetChild(0).gameObject;
         spawnY = transform.position.y;
         timeElapsed = 0.0f;
         //explosion.SetActive(false); // 활성화 상태를 끄기(비활성화)
+
+        Player player = FindObjectOfType<Player>();
+        onDead += player.AddScore;
     }
 
     private void Update()
@@ -34,10 +41,13 @@ public class Enemy : MonoBehaviour
         //transform.Translate(speed * Time.deltaTime * new Vector3(-1,0), Space.Self);  // new로 새로 만들기 때문에 Vector3.left를 쓰는 것보다는 느리다.
     }
 
-    protected virtual void OnCollisionEnter2D(Collision2D collision) // Specail Enemy 상속을 위한 오버라이드 위해서 가상함수 지정
+    // Special Enemy에서 오버라이드 할 수 있게 가상함수로 변경
+    protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
         if( collision.gameObject.CompareTag("Bullet") )
         {
+            onDead?.Invoke(score);
+
             //GameObject obj = Instantiate(explosion, transform.position, Quaternion.identity);
             //Destroy(obj, 0.42f);
             explosion.SetActive(true);  // 총알에 맞았을 때 익스플로젼을 활성화 시키고

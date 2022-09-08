@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Asteroid : MonoBehaviour
 {
+    public int score = 50;
     public float rotateSpeed = 360.0f;          // 회전 속도
     public float moveSpeed = 3.0f;              // 이동 속도
 
@@ -25,6 +26,7 @@ public class Asteroid : MonoBehaviour
     public int hitPoint = 3;
 
     GameObject explosion;
+    private System.Action<int> onDead;
 
     private void Awake()
     {
@@ -65,6 +67,9 @@ public class Asteroid : MonoBehaviour
     {
         explosion = transform.GetChild(0).gameObject;
 
+        Player player = FindObjectOfType<Player>();
+        onDead += player.AddScore;
+
         StartCoroutine(SelfCrush());
     }
 
@@ -97,6 +102,7 @@ public class Asteroid : MonoBehaviour
 
             if (hitPoint <= 0)
             {
+                onDead?.Invoke(score);
                 Crush();
             }
         }
