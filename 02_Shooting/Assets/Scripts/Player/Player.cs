@@ -237,15 +237,17 @@ public class Player : MonoBehaviour
     /// <returns></returns>
     IEnumerator EnterInvincibleMode()
     {
-        bodyCollider.enabled = false;       // 충돌이 안일어나게 만들기
+        //bodyCollider.enabled = false;       // 충돌이 안일어나게 만들기
+        gameObject.layer = LayerMask.NameToLayer("Invincible");
         isInvincibleMode = true;            // 무적모드 켜기
         timeElapsed = 0.0f;                 // 타이머 초기화
 
         yield return new WaitForSeconds(invincibleTime);    // 무적시간 동안 대기
 
         spriteRenderer.color = Color.white; // 원래 색으로 되돌리기
-        isInvincibleMode = false;           // 무적모드 끄기
-        bodyCollider.enabled = !isDead;        // 살아있을때만 충돌이 다시 발생하게 만들기...
+        isInvincibleMode = false;           // 무적모드 끄기        
+        gameObject.layer = LayerMask.NameToLayer("Player");
+        //bodyCollider.enabled = !isDead;     // 살아있을 때만 충돌이 다시 발생하게 만들기.
     }
 
     /// <summary>
@@ -366,7 +368,7 @@ public class Player : MonoBehaviour
 
         fireCoroutine = Fire(); // 연사용 코루틴 저장
 
-        life = initialLife;     // 생명숫자도 초기화
+        //life = initialLife;     // 생명숫자도 초기화
     }
 
     /// <summary>
@@ -397,6 +399,7 @@ public class Player : MonoBehaviour
     private void Start()
     {
         Power = 1;      // 시작할 때 파워를 1로 설정(발사 위치 갱신용)
+        Life = initialLife;
     }
 
     /// <summary>
