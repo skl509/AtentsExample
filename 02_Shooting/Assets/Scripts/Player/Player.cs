@@ -484,4 +484,6 @@ public class Player : MonoBehaviour
             //Debug.Log($"플레이어의 Life는 {life}");
         }
     }
+
+
 }
