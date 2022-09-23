@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Player : MonoBehaviour, IFly, IDead 
+public class Player : MonoBehaviour, IFly, IDead
 {
     public float moveSpeed = 5.0f;
     public float rotateSpeed = 180.0f;
@@ -35,7 +35,7 @@ public class Player : MonoBehaviour, IFly, IDead
         checker = GetComponentInChildren<GroundChecker>();
         checker.onGrounded += OnGround;
 
-        usePosition = Vector3.forward;   // 플레이어 로컬 좌표기준으로 플레이어의 앞
+        usePosition = Vector3.forward;              // 플레이어 로컬 좌표기준으로 플레이어의 앞
     }
 
     private void OnEnable()
@@ -91,7 +91,7 @@ public class Player : MonoBehaviour, IFly, IDead
     private void OnDrawGizmos()
     {
         // 플레이어가 오브젝트를 사용하는 범위 표시
-        Vector3 newUsePosition = transform.rotation * usePosition;//usePosition(로컬좌표)에 회전을 곱해서 월드좌표로 변환됨
+        Vector3 newUsePosition = transform.rotation * usePosition;  // usePosition(로컬좌표)에 회전을 곱해서 월드좌표로 변환됨
         Gizmos.DrawWireSphere(transform.position + newUsePosition, useRadius);
         Gizmos.DrawWireSphere(transform.position + newUsePosition + transform.up * useHeight, useRadius);
     }
@@ -175,26 +175,25 @@ public class Player : MonoBehaviour, IFly, IDead
         rigid.velocity = Vector3.zero;              // 원래 플레이어의 벨로시티 제거
         rigid.MovePosition(rigid.position + delta); // 플렛폼이 이동한만큼 이동시키기
     }
-    
-    public void Fly(Vector3 flyVector) 
+
+    public void Fly(Vector3 flyVector)
     {
         rigid.velocity = Vector3.zero;
         rigid.AddForce(flyVector, ForceMode.Impulse);
     }
 
-    public void Die() 
-    {   
-        inputActions.Player.Disable();
-        //사망시 입력받는거 비활성화 해주기
-        rigid.constraints = RigidbodyConstraints.None; // 모든 회전이 가능하도록 고정해놨던 것들을 푼다.
-        rigid.angularDrag = 0.0f; // 회전 마찰력을 0으로 만들기
-        rigid.AddForceAtPosition(-transform.forward, transform.position + transform.up * 5.0f, ForceMode.Impulse);
-        //플레이어 머리 뒷쪽 방향으로 힘 가해주기
-        rigid.AddTorque(transform.up * 3.0f, ForceMode.Impulse);
+    public void Die()
+    {
+        inputActions.Player.Disable();      // Player 액션맵을 disable해서 더 이상 입력처리를 안함
 
-        anim.SetTrigger("Die");// 사망애니메이션 실행
+        rigid.constraints = RigidbodyConstraints.None;  // 모든 회전이 가능하도록 고정해놨던 것들을 푼다.
+        rigid.angularDrag = 0.0f;                       // 회전 마찰력 0으로 만들기
+        // 대략 머리쯤을 밀어서 뒤로 넘어지도록 만들기
+        rigid.AddForceAtPosition(-transform.forward, transform.position + transform.up * 10.0f, ForceMode.Impulse); 
+        rigid.AddTorque(transform.up * 3.0f, ForceMode.Impulse);    // 넘어질때 약간 돌면서 넘어지게 만들기
+
+        anim.SetTrigger("Die");     // 사망 애니메이션 실행
 
         onDie?.Invoke();    // 죽었을 때 다른 클래스에서 해야할 일들을 실행 시키기
     }
-
 }

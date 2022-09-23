@@ -7,10 +7,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1726336943919117110, guid: 5179c4e0e5b6efc418737dfed29b34f8, type: 3}
-      propertyPath: m_Layer
-      value: 6
-      objectReference: {fileID: 0}
     - target: {fileID: 1876732700384022327, guid: 5179c4e0e5b6efc418737dfed29b34f8, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -22,18 +18,6 @@ PrefabInstance:
     - target: {fileID: 3448500047410627080, guid: 5179c4e0e5b6efc418737dfed29b34f8, type: 3}
       propertyPath: m_Name
       value: TwoWayDoor
-      objectReference: {fileID: 0}
-    - target: {fileID: 3448500047410627080, guid: 5179c4e0e5b6efc418737dfed29b34f8, type: 3}
-      propertyPath: m_Layer
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 5726582276475899292, guid: 5179c4e0e5b6efc418737dfed29b34f8, type: 3}
-      propertyPath: m_Layer
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 5733245061117235023, guid: 5179c4e0e5b6efc418737dfed29b34f8, type: 3}
-      propertyPath: m_Layer
-      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6243521185171704428, guid: 5179c4e0e5b6efc418737dfed29b34f8, type: 3}
       propertyPath: m_Mesh
