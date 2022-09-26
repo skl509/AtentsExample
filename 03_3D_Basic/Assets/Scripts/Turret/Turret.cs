@@ -10,6 +10,16 @@ public class Turret : MonoBehaviour
     public float turnSpeed = 2.0f;
     public float sightRadius = 5.0f;
 
+    public GameObject bulletPrefab;
+    public float fireInterval = 0.5f;
+    public float fireAngle = 10.0f;
+
+    Transform fireTransform;
+    IEnumerator fireCoroutine;
+    WaitForSeconds waitFireInterval;
+    bool isFiring = false;
+
+
     Transform target = null;
     Transform barrelBody;
 
@@ -19,14 +29,21 @@ public class Turret : MonoBehaviour
 
     private void Awake()
     {
-        barrelBody = transform.GetChild(2);
+        barrelBody = transform.GetChild(2); // 총구 나오는것 위치정보 받기위해서
+        fireTransform = barrelBody.GetChild(1);// 총알발싸하는 위치정보 받기위해서
+
+        fireCoroutine = PeriodFire();//발사 속도 조절위해서
     }
 
     private void Start()
     {
-        initialForward = transform.forward;
+        initialForward = transform.forward; 
         SphereCollider col = GetComponent<SphereCollider>();
         col.radius = sightRadius;
+
+        waitFireInterval = new WaitForSeconds(fireInterval);
+        //StartCoroutine(fireCoroutine);      // 코루틴을 자주 껏다 켰다 할 때는 코루틴을 변수에 저장하고 사용해야한다.
+        //StartCoroutine(PeriodFire());     // 이 코드는 PeriodFire()를 1회용으로 사용한다. 그래서 가비지가 생성된다.
     }
 
     /// <summary>
@@ -43,38 +60,7 @@ public class Turret : MonoBehaviour
 
     private void Update()
     {
-        if (target != null)
-        {
-            // 보간을 사용한 경우
-            //Vector3 dir = target.position - barrelBody.position;    // 총구에서 플레이어의 위치로 가는 방향 벡터 계산
-            //dir.y = 0;      // 방향 벡터에서 y축의 영향을 제거 => xz 평면상의 방향만 남음
-
-            ////turnSpeed초에 걸처서 0->1로 변경된다. (시작점에서 도착점까지 걸리는 시간이 trunSpeed초)
-            //dir = Vector3.Lerp(barrelBody.forward, dir, turnSpeed * Time.deltaTime);    
-
-            //barrelBody.rotation = Quaternion.LookRotation(dir);     // 최종적인 방향을 바라보는 회전을 만들어서 총몸에 적용
-
-
-            // 각도를 사용하는 경우
-            Vector3 dir = target.position - barrelBody.position;    // 총구에서 플레이어의 위치로 가는 방향 벡터 계산
-            dir.y = 0;
-
-            targetAngle = Vector3.SignedAngle(initialForward, dir, barrelBody.up);
-
-            if (currentAngle < targetAngle)
-            {
-                currentAngle += (turnSpeed * Time.deltaTime);
-                currentAngle = Mathf.Min(currentAngle, targetAngle);
-            }
-            else if (currentAngle > targetAngle)
-            {
-               currentAngle -= (turnSpeed * Time.deltaTime);
-               currentAngle = Mathf.Max(currentAngle, targetAngle);
-            }
-
-            Vector3 targetDir = Quaternion.Euler(0, currentAngle, 0) * initialForward;
-            barrelBody.rotation = Quaternion.LookRotation(targetDir);
-        }
+        LookTarget();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -91,5 +77,94 @@ public class Turret : MonoBehaviour
         {
             target = null;
         }
+    }
+
+    private void LookTarget()
+    {
+        if (target != null)
+        {
+            // 보간을 사용한 경우(감속하며 회전)
+            //Vector3 dir = target.position - barrelBody.position;    // 총구에서 플레이어의 위치로 가는 방향 벡터 계산
+            //dir.y = 0;      // 방향 벡터에서 y축의 영향을 제거 => xz 평면상의 방향만 남음
+
+            //// turnSpeed초에 걸처서 0->1로 변경된다. (시작점에서 도착점까지 걸리는 시간이 trunSpeed초)
+            //dir = Vector3.Lerp(barrelBody.forward, dir, turnSpeed * Time.deltaTime);    
+
+            //barrelBody.rotation = Quaternion.LookRotation(dir);     // 최종적인 방향을 바라보는 회전을 만들어서 총몸에 적용
+
+
+            // 각도를 사용하는 경우(등속도로 회전)
+            Vector3 dir = target.position - barrelBody.position;    // 총구에서 플레이어의 위치로 가는 방향 벡터 계산
+            dir.y = 0;
+
+            targetAngle = Vector3.SignedAngle(initialForward, dir, barrelBody.up);
+            if (targetAngle < 0)
+            {
+                targetAngle = 360.0f + targetAngle;
+            }
+
+            if (currentAngle < targetAngle)
+            {
+                currentAngle += (turnSpeed * Time.deltaTime);
+                currentAngle = Mathf.Min(currentAngle, targetAngle);
+            }
+            else if (currentAngle > targetAngle)
+            {
+                currentAngle -= (turnSpeed * Time.deltaTime);
+                currentAngle = Mathf.Max(currentAngle, targetAngle);
+            }
+
+            Vector3 targetDir = Quaternion.Euler(0, currentAngle, 0) * initialForward;
+            barrelBody.rotation = Quaternion.LookRotation(targetDir);
+
+            if (!isFiring && IsInFireAngle())
+            {
+                FireStart();
+            }
+            if (isFiring && !IsInFireAngle())
+            {
+                FireStop();
+            }
+        }
+    }
+
+    bool IsInFireAngle()
+    {
+        Vector3 dir = target.position - barrelBody.position;
+        dir.y = 0.0f;
+        return Vector3.Angle(barrelBody.forward, dir) < fireAngle;
+    }
+
+    private void Fire()
+    {
+        // 총알을 발사한다.
+        // 총알 프리팹. 총알이 발사될 방향과 위치. 총알이 발사되는 주기. 
+        Instantiate(bulletPrefab, fireTransform.position, fireTransform.rotation);
+    }
+
+    IEnumerator PeriodFire()
+    {
+        while (true)
+        {
+            Fire();
+            yield return waitFireInterval;  // 가비지를 줄이는 방식
+        }
+    }
+
+    private void FireStart()
+    {
+        isFiring = true;
+        StartCoroutine(fireCoroutine);
+    }
+
+    private void FireStop()
+    {
+        StopCoroutine(fireCoroutine);
+        isFiring = false;
+    }
+
+    private void OnDrawGizmos() // 각도맞쳐주기
+    {
+
     }
 }
