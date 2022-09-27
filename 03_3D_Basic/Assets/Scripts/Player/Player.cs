@@ -61,9 +61,9 @@ public class Player : MonoBehaviour, IFly, IDead
         Move();
         Rotate();
 
-        if( isJumping )
+        if (isJumping)
         {
-            if ( rigid.velocity.y < 0 )
+            if (rigid.velocity.y < 0)
             {
                 checker.gameObject.SetActive(true);
             }
@@ -72,7 +72,7 @@ public class Player : MonoBehaviour, IFly, IDead
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.CompareTag("Platform"))
+        if (collision.gameObject.CompareTag("Platform"))
         {
             Platform platform = collision.gameObject.GetComponent<Platform>();
             platform.onMove += OnMovingObject;      // 델리게이트 연결
@@ -98,6 +98,8 @@ public class Player : MonoBehaviour, IFly, IDead
 
     private void OnMoveInput(InputAction.CallbackContext context)
     {
+        GameManager.Inst.GameStart();
+
         Vector2 input = context.ReadValue<Vector2>();   // 입력된 값을 읽어오기
         //Debug.Log(input);
         moveDir = input.y;      // w : +1,  s : -1   전진인지 후진인지 결정
@@ -108,6 +110,8 @@ public class Player : MonoBehaviour, IFly, IDead
 
     private void OnJumpInput(InputAction.CallbackContext _)
     {
+        GameManager.Inst.GameStart();
+
         if (!isJumping) // 점프 중이 아닐 때만 점프
         {
             isJumping = true;
@@ -117,6 +121,8 @@ public class Player : MonoBehaviour, IFly, IDead
 
     private void OnUseInput(InputAction.CallbackContext _)
     {
+        GameManager.Inst.GameStart();
+
         anim.SetTrigger("Use"); // 아이템 사용 애니메이션 재생
 
         Vector3 newUsePosition = transform.rotation * usePosition;
@@ -127,10 +133,10 @@ public class Player : MonoBehaviour, IFly, IDead
             useRadius,                                      // 캡슐의 반지름
             LayerMask.GetMask("UseableObject"));            // 체크할 레이어
 
-        if( colliders.Length > 0)   // 캡슐에 겹쳐진 UseableObject 컬라이더가 한개 이상이다.
+        if (colliders.Length > 0)   // 캡슐에 겹쳐진 UseableObject 컬라이더가 한개 이상이다.
         {
             IUseableObject useable = colliders[0].GetComponent<IUseableObject>();   // 여러개가 있어도 하나만 처리
-            if(useable != null)     // IUseableObject를 가진 오브젝트이면
+            if (useable != null)     // IUseableObject를 가진 오브젝트이면
             {
                 useable.Use();      // 사용하기
             }
@@ -150,7 +156,7 @@ public class Player : MonoBehaviour, IFly, IDead
 
         Quaternion rotate = Quaternion.AngleAxis(rotateDir * rotateSpeed * Time.fixedDeltaTime, transform.up);
         rigid.MoveRotation(rigid.rotation * rotate);
-        
+
 
         // Quaternion.Euler(0, rotateDir * rotateSpeed * Time.fixedDeltaTime, 0) // x,z축은 회전 없고 y축 기준으로 회전
         // Quaternion.AngleAxis(rotateDir * rotateSpeed * Time.fixedDeltaTime, transform.up) // 플레이어의 Y축 기준으로 회전
@@ -159,7 +165,7 @@ public class Player : MonoBehaviour, IFly, IDead
     void JumpStart()
     {
         // 플레이어의 위쪽 방향(up)으로 jumpPower만큼 즉시 힘을 추가한다.(질량 영향있음)
-        rigid.AddForce(transform.up * jumpPower, ForceMode.Impulse);       
+        rigid.AddForce(transform.up * jumpPower, ForceMode.Impulse);
 
         checker.gameObject.SetActive(false);
     }
@@ -189,7 +195,7 @@ public class Player : MonoBehaviour, IFly, IDead
         rigid.constraints = RigidbodyConstraints.None;  // 모든 회전이 가능하도록 고정해놨던 것들을 푼다.
         rigid.angularDrag = 0.0f;                       // 회전 마찰력 0으로 만들기
         // 대략 머리쯤을 밀어서 뒤로 넘어지도록 만들기
-        rigid.AddForceAtPosition(-transform.forward, transform.position + transform.up * 10.0f, ForceMode.Impulse); 
+        rigid.AddForceAtPosition(-transform.forward, transform.position + transform.up * 10.0f, ForceMode.Impulse);
         rigid.AddTorque(transform.up * 3.0f, ForceMode.Impulse);    // 넘어질때 약간 돌면서 넘어지게 만들기
 
         anim.SetTrigger("Die");     // 사망 애니메이션 실행
