@@ -6,12 +6,12 @@ using UnityEngine.SceneManagement;
 
 public class Timer : MonoBehaviour
 {
-    TextMeshProUGUI timeText;
+    TextMeshProUGUI timeText; // 움직이려는 텍스트 변수 생성
 
-    float currentTime = 0.0f;
-    bool isStart = false;
+    float currentTime = 0.0f; // 초기시간설정
+    bool isStart = false; // 스타트 햇는지 안햇는지 논리형으로 생성
 
-    float CurrentTime {
+    float CurrentTime { //최근시간 생성위해서 파라미터 생성
     
         get => currentTime;
         set 
