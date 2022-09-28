@@ -1,7 +1,5 @@
-using JetBrains.Annotations;
 using System.Collections;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -41,7 +39,7 @@ public class ResultPannel : MonoBehaviour
     private void Start()
     {
         Goal goal = FindObjectOfType<Goal>();
-        button.onClick.AddListener(goal.GoNextStage);
+        button.onClick.AddListener(goal.GoNextStage); // 버튼에 함수 연결
     }
 
 
