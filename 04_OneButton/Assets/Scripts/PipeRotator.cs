@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,8 +28,8 @@ public class PipeRotator : MonoBehaviour
     private void Awake()
     {
         pipes = GetComponentsInChildren<Pipe>();    // 자식으로 있는 Pipe 모두 찾기
-        startPointX = transform.Find("StartPoint").position.x;  // 해당 오브젝트의 x 값만 찾아오기
-        endPointX = transform.Find("EndPoint").position.x;      //해당 오브젝트의 x 값만 찾아오기
+        startPointX = transform.Find("StartPoint").position.x;  // startPointX 구하기
+        endPointX = transform.Find("EndPoint").position.x;      // endPointX 구하기
     }
 
     private void FixedUpdate()
@@ -40,9 +41,18 @@ public class PipeRotator : MonoBehaviour
             if (endPointX > pipe.transform.position.x)         // 파이프의 위치가 endPointX보다 왼쪽인지 체크
             {
                 // 파이프의 위치가 왼쪽에 있으면 startPointX로 이동
-                // 파이프의 높이를 랜덤으로 변화시키기
+                // 파이프의 높이를 랜덤으로 변화시키기                
                 pipe.transform.position = new Vector3(startPointX, pipe.RandomHeight, 0);
+
             }
+        }
+    }
+
+    public void AddPipeSoredDelegate(Action<int> del)
+    {
+        foreach (Pipe pipe in pipes)
+        {
+            pipe.onScored += del;
         }
     }
 }
