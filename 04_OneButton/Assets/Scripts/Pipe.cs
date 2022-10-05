@@ -13,7 +13,7 @@ public class Pipe : MonoBehaviour
     /// 랜덤 최대 높이
     /// </summary>
     public float maxHeight;
-
+    
     /// <summary>
     /// 리지드바디 컴포넌트
     /// </summary>
@@ -59,7 +59,7 @@ public class Pipe : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         // 플레이어가 동과 했다면
-        if (collision.CompareTag("Player"))
+        if(collision.CompareTag("Player"))
         {
             Bird bird = collision.GetComponent<Bird>();
             if (bird != null && !bird.IsDead)

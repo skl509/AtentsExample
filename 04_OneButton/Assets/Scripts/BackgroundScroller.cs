@@ -28,7 +28,7 @@ public class BackgroundScroller : MonoBehaviour
     {
         // Awake : 이 오브젝트안에 있는 것을 처리할 때 사용.
         bgSlots = new Transform[transform.childCount];  // 자식 갯수만큼 bgSlots 배열 크기 잡기
-        for (int i = 0; i < transform.childCount; i++)
+        for(int i=0;i<transform.childCount;i++)
         {
             bgSlots[i] = transform.GetChild(i); //bgSlots에 들어갈(이미지가 있는 자식 오브젝트) 트랜스폼들 넣기
         }
@@ -41,11 +41,11 @@ public class BackgroundScroller : MonoBehaviour
     }
 
     private void Update()
-    {
-        foreach (var slot in bgSlots)    // bgSlots안에 있는 오브젝트들 순차적으로 처리
+    {        
+        foreach(var slot in bgSlots)    // bgSlots안에 있는 오브젝트들 순차적으로 처리
         {
             slot.Translate(scrollingSpeed * Time.deltaTime * -transform.right); // 초당 scrollingSpeed만큼의 속도로 왼쪽으로 이동
-            if (slot.position.x < endPoint)    // 이동 후에 endPoint보다 왼쪽에 있으면
+            if ( slot.position.x < endPoint)    // 이동 후에 endPoint보다 왼쪽에 있으면
             {
                 slot.Translate(width * bgSlots.Length * transform.right);   // 오른쪽 끝으로 보내기
             }

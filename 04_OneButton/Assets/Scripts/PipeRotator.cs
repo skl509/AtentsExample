@@ -9,7 +9,7 @@ public class PipeRotator : MonoBehaviour
     /// 파이프가 움직이는 속도
     /// </summary>
     public float pipeMoveSpeed = 5.0f;
-
+    
     /// <summary>
     /// 움직일 파이프들
     /// </summary>
@@ -33,24 +33,23 @@ public class PipeRotator : MonoBehaviour
     }
 
     private void FixedUpdate()
-    {
-        foreach (var pipe in pipes)  // pipes에 있는 모든 pipe를 하나씩 처리하기
-        {
+    {        
+        foreach(var pipe in pipes)  // pipes에 있는 모든 pipe를 하나씩 처리하기
+        {            
             pipe.MoveLeft(pipeMoveSpeed * Time.fixedDeltaTime); // 파이프를 초당 pipeMoveSpeed만큼의 속도로 계속 왼쪽으로 이동 시키기
-
-            if (endPointX > pipe.transform.position.x)         // 파이프의 위치가 endPointX보다 왼쪽인지 체크
+                        
+            if ( endPointX > pipe.transform.position.x)         // 파이프의 위치가 endPointX보다 왼쪽인지 체크
             {
                 // 파이프의 위치가 왼쪽에 있으면 startPointX로 이동
                 // 파이프의 높이를 랜덤으로 변화시키기                
                 pipe.transform.position = new Vector3(startPointX, pipe.RandomHeight, 0);
-
             }
         }
     }
 
     public void AddPipeSoredDelegate(Action<int> del)
     {
-        foreach (Pipe pipe in pipes)
+        foreach(Pipe pipe in pipes)
         {
             pipe.onScored += del;
         }

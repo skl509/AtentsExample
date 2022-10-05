@@ -44,7 +44,7 @@ public partial class @BirdInputActions : IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""New control scheme"",
+                    ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -55,7 +55,7 @@ public partial class @BirdInputActions : IInputActionCollection2, IDisposable
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""New control scheme"",
+                    ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -64,12 +64,12 @@ public partial class @BirdInputActions : IInputActionCollection2, IDisposable
         },
         {
             ""name"": ""Test"",
-            ""id"": ""b3958755-c24e-498f-aaa4-fa97deacc5c7"",
+            ""id"": ""97df96c6-37fe-4701-9522-4c9643542100"",
             ""actions"": [
                 {
                     ""name"": ""Test1"",
                     ""type"": ""Button"",
-                    ""id"": ""2b151327-426f-4ee8-a60d-0b0393213996"",
+                    ""id"": ""332d938d-e102-464e-820a-9ae499af1089"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -78,7 +78,7 @@ public partial class @BirdInputActions : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Test2"",
                     ""type"": ""Button"",
-                    ""id"": ""751f7eb3-0bfc-4ac2-abff-99c0285655d8"",
+                    ""id"": ""c3a7bdd5-36a2-454c-8ae8-fae3650ab607"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -87,7 +87,7 @@ public partial class @BirdInputActions : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Test3"",
                     ""type"": ""Button"",
-                    ""id"": ""7af68865-606e-4a41-b8bb-cdb72c010b2a"",
+                    ""id"": ""81161288-b797-41be-89ac-f25cd977c6bd"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -96,7 +96,7 @@ public partial class @BirdInputActions : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Test4"",
                     ""type"": ""Button"",
-                    ""id"": ""767226ef-ca94-4f08-8598-893c3728d8d4"",
+                    ""id"": ""727cccaa-e2e4-490e-b574-b3e41039f25a"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -105,7 +105,7 @@ public partial class @BirdInputActions : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Test5"",
                     ""type"": ""Button"",
-                    ""id"": ""f5469038-611f-4231-8b47-94aea942c91e"",
+                    ""id"": ""76698b22-cb16-4a57-9870-0aadfd58368b"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -114,7 +114,7 @@ public partial class @BirdInputActions : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Test6"",
                     ""type"": ""Button"",
-                    ""id"": ""a4c5c85e-fa4b-4f95-845a-89c14884b07e"",
+                    ""id"": ""a4417d0b-55ed-4df9-836f-7e92bbd8cbd9"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -123,7 +123,7 @@ public partial class @BirdInputActions : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Test7"",
                     ""type"": ""Button"",
-                    ""id"": ""c5b68838-e006-48dc-861e-bd6bbb78085b"",
+                    ""id"": ""487b2405-1759-4143-8f6b-5496c9057e0e"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -132,7 +132,7 @@ public partial class @BirdInputActions : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Test8"",
                     ""type"": ""Button"",
-                    ""id"": ""a1436fa8-bfef-46c3-9fcb-e5ad04a75068"",
+                    ""id"": ""a46281d8-9fda-4654-be7d-f0a87d80e475"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -141,7 +141,7 @@ public partial class @BirdInputActions : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Test9"",
                     ""type"": ""Button"",
-                    ""id"": ""e1759f28-4890-4c89-a009-950f39488338"",
+                    ""id"": ""c9e5b722-9aad-403f-8064-2fb6a4f6d026"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -150,7 +150,7 @@ public partial class @BirdInputActions : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Test0"",
                     ""type"": ""Button"",
-                    ""id"": ""8c1d2f85-17cc-44fd-b093-3557d2dffc8a"",
+                    ""id"": ""bc12c8a6-0368-4a00-b2d2-e984367d987a"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -160,110 +160,110 @@ public partial class @BirdInputActions : IInputActionCollection2, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""ba79007a-ce0b-429d-8b33-fd616a1acb6a"",
+                    ""id"": ""09b69b32-5cbd-4e08-a628-105a0e643cb0"",
                     ""path"": ""<Keyboard>/1"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Test1"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""c6ebf903-20ff-48b1-a585-7a1c7992d3c5"",
+                    ""id"": ""af84f8af-85e6-415f-b371-733efb86235b"",
                     ""path"": ""<Keyboard>/2"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Test2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""92d49a0f-eddb-4fdd-930a-f58dc69e0905"",
+                    ""id"": ""2cebf396-964b-44d8-88aa-7f1087d6612c"",
                     ""path"": ""<Keyboard>/3"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Test3"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""1fb9890e-0b51-409d-9173-d91da3b10761"",
+                    ""id"": ""cdcf2adf-6d1a-4ceb-bed2-40f298960890"",
                     ""path"": ""<Keyboard>/4"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Test4"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""d343eb0f-f205-49cf-99f2-767c6f437688"",
+                    ""id"": ""d080685a-0203-4479-a3ef-7ddd6de2309d"",
                     ""path"": ""<Keyboard>/5"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Test5"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""2a2f0e86-6baf-4de5-a272-81a297598bfe"",
+                    ""id"": ""b5ff235b-d7a1-4dfc-98f3-6a1cb204047e"",
                     ""path"": ""<Keyboard>/6"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Test6"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""74a1f4ba-df5a-42b8-975c-509f06f7ca53"",
+                    ""id"": ""3bbb26f7-9377-4b8a-a14d-ed1c4fd767d0"",
                     ""path"": ""<Keyboard>/7"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Test7"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""e4009ab9-75f1-43df-a539-7a579b23d3ee"",
+                    ""id"": ""b0b58bf4-c205-4156-b3d3-a0867a707a39"",
                     ""path"": ""<Keyboard>/8"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Test8"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""2e4bf1e1-4500-4837-8b9d-9de10d068f26"",
+                    ""id"": ""4a83f887-cbd8-4e41-97ba-25d0a6c06cdb"",
                     ""path"": ""<Keyboard>/9"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Test9"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""b5f92cb9-5cac-401e-b64a-0ea962183276"",
+                    ""id"": ""f4af060b-27f2-4f30-b853-8d61a3b0632b"",
                     ""path"": ""<Keyboard>/0"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Test0"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -273,8 +273,8 @@ public partial class @BirdInputActions : IInputActionCollection2, IDisposable
     ],
     ""controlSchemes"": [
         {
-            ""name"": ""New control scheme"",
-            ""bindingGroup"": ""New control scheme"",
+            ""name"": ""Keyboard&Mouse"",
+            ""bindingGroup"": ""Keyboard&Mouse"",
             ""devices"": [
                 {
                     ""devicePath"": ""<Keyboard>"",
@@ -498,13 +498,13 @@ public partial class @BirdInputActions : IInputActionCollection2, IDisposable
         }
     }
     public TestActions @Test => new TestActions(this);
-    private int m_NewcontrolschemeSchemeIndex = -1;
-    public InputControlScheme NewcontrolschemeScheme
+    private int m_KeyboardMouseSchemeIndex = -1;
+    public InputControlScheme KeyboardMouseScheme
     {
         get
         {
-            if (m_NewcontrolschemeSchemeIndex == -1) m_NewcontrolschemeSchemeIndex = asset.FindControlSchemeIndex("New control scheme");
-            return asset.controlSchemes[m_NewcontrolschemeSchemeIndex];
+            if (m_KeyboardMouseSchemeIndex == -1) m_KeyboardMouseSchemeIndex = asset.FindControlSchemeIndex("Keyboard&Mouse");
+            return asset.controlSchemes[m_KeyboardMouseSchemeIndex];
         }
     }
     public interface IBirdActions
