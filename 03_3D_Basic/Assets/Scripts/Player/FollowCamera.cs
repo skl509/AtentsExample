@@ -9,14 +9,12 @@ public class FollowCamera : MonoBehaviour
 
     private void Start()
     {
-        if (target == null) 
+        if( target == null )
         {
-            target = GameManager.Inst.Player.transform; // Find 보다 더 빠르다...
-        
+            target = GameManager.Inst.Player.transform;
         }
 
-        offset = transform.position - target.position; //캐릭터만 보는 방향 설정
-
+        offset = transform.position - target.position;
     }
 
     private void FixedUpdate()

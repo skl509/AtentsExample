@@ -36,9 +36,9 @@ public class ImageNumber : MonoBehaviour
 
     private void Update()
     {
-        if ((int)currentNumber != Number)  // currentNumber가 Number와 같아졌는지 확인. 다를 때만 아래코드 실행
-        {
-            if (isInstanceSet)
+        if ((int)currentNumber != Number )  // currentNumber가 Number와 같아졌는지 확인. 다를 때만 아래코드 실행
+        {     
+            if(isInstanceSet)   
             {
                 // 즉시 값을 올리는 설정일 경우
                 currentNumber = Number; // currentNumber를 바로 Number로 설정

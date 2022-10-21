@@ -26,7 +26,7 @@ public class Timer : MonoBehaviour
 
     private void Awake()
     {
-        timeText = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+        timeText = transform.GetChild(1).GetComponent<TextMeshProUGUI>();
     }
 
     private void Start()
@@ -42,7 +42,7 @@ public class Timer : MonoBehaviour
 
     private void Update()
     {
-        if (isStart)
+        if( isStart )
         {
             CurrentTime += Time.deltaTime;
         }

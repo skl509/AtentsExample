@@ -65,7 +65,7 @@ public class Turret : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if( other.CompareTag("Player"))
         {
             target = other.transform;
         }
@@ -102,7 +102,7 @@ public class Turret : MonoBehaviour
             float betweenAngle = Vector3.SignedAngle(barrelBody.forward, barrelToPlayerDir, barrelBody.up);
 
             Vector3 resultDir;
-            if (Mathf.Abs(betweenAngle) > 0.1f)   // 사이각이 일정 각도 이하인지 체크
+            if( Mathf.Abs(betweenAngle) > 0.1f )   // 사이각이 일정 각도 이하인지 체크
             {
                 // 사이각이 충분히 벌어진 경우
 
@@ -124,22 +124,20 @@ public class Turret : MonoBehaviour
             }
             barrelBody.rotation = Quaternion.LookRotation(resultDir);
 
-
-
-
-            //if (!isFiring && IsInFireAngle())
-            //{
-            //    FireStart();
-            //}
-            //if( isFiring && !IsInFireAngle())
-            //{
-            //    FireStop();
-            //}
+            // 플레이어가 발사각 안에 있으면 공격 시작. 없으면 중지
+            if (!isFiring && IsInFireAngle())
+            {
+                FireStart();
+            }
+            if (isFiring && !IsInFireAngle())
+            {
+                FireStop();
+            }
         }
     }
 
     bool IsInFireAngle()
-    {
+    {                
         Vector3 dir = target.position - barrelBody.position;
         dir.y = 0.0f;
         return Vector3.Angle(barrelBody.forward, dir) < fireAngle;
@@ -175,6 +173,6 @@ public class Turret : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-
+        
     }
 }

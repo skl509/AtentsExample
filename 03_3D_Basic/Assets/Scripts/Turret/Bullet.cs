@@ -19,10 +19,10 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if( collision.gameObject.CompareTag("Player") )
         {
             IDead playerDead = collision.gameObject.GetComponent<IDead>();
-            if (playerDead != null)
+            if(playerDead != null)
             {
                 playerDead.Die();
             }
