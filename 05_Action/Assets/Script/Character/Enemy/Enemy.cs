@@ -23,7 +23,6 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
     /// </summary>
     Transform waypointTarget;
 
-    // --------------------------------------------------------------------------------------------
 
     // 이동 관련 변수 ------------------------------------------------------------------------------
     /// <summary>
@@ -31,7 +30,6 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
     /// </summary>
     public float moveSpeed = 3.0f;
 
-    // --------------------------------------------------------------------------------------------
 
     // 추적 관련 변수 ------------------------------------------------------------------------------
     /// <summary>
@@ -48,18 +46,21 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
     /// 추적할 플레이어의 트랜스폼
     /// </summary>
     Transform chaseTarget;
-    // --------------------------------------------------------------------------------------------
+
 
     // 상태 관련 변수 ------------------------------------------------------------------------------
     EnemyState state = EnemyState.Patrol; // 현재 적의 상태(대기 상태냐 순찰 상태냐)
     public float waitTime = 1.0f;   // 목적지에 도착했을 때 기다리는 시간
     float waitTimer;                // 남아있는 기다려야 하는 시간    
-    // --------------------------------------------------------------------------------------------
+
 
     // 컴포넌트 캐싱용 변수 -------------------------------------------------------------------------
     Animator anim;
     NavMeshAgent agent;
-    // --------------------------------------------------------------------------------------------
+    SphereCollider bodyCollider;
+    Rigidbody rigid;
+    ParticleSystem dieEffect;       // 죽을 때 표시될 이팩트
+
 
     // 추가 데이터 타입 ----------------------------------------------------------------------------
 
@@ -73,14 +74,29 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
         Chase,      // 추적 상태
         Dead        // 사망 상태
     }
-    // --------------------------------------------------------------------------------------------
+
 
     // 전투용 데이터 -------------------------------------------------------------------------------
     public float attackPower = 10.0f;      // 공격력
     public float defencePower = 3.0f;      // 방어력
     public float maxHP = 100.0f;    // 최대 HP
-    float hp = 100.0f;              // 현재 HP
-    // --------------------------------------------------------------------------------------------
+    float hp = 100.0f;              // 현재 HP    
+
+
+    // 아이템 드랍용 데이터 -------------------------------------------------------------------------
+    [System.Serializable]    
+    public struct ItemDropInfo          // 드랍 아이템 정보
+    {
+        public ItemIDCode id;           // 아이템 종류
+        [Range(0.0f,1.0f)]
+        public float dropPercentage;    // 아이템 드랍 확율
+    }
+
+    /// <summary>
+    /// 이 몬스터가 드랍할 아이템의 종류
+    /// </summary>    
+    public ItemDropInfo[] dropItems;
+
 
     // 델리게이트 ----------------------------------------------------------------------------------
     /// <summary>
@@ -180,7 +196,8 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
                         break;
                     case EnemyState.Dead:
                         agent.isStopped = true;     // 길찾기 정지
-                        anim.SetTrigger("Die");     // 사망 애니메이션 재생
+                        anim.SetTrigger("Die");     // 사망 애니메이션 재생                                                    
+                        StartCoroutine(DeadRepresent());    // 시간이 지나면 서서히 가라앉는 연출 실행
                         stateUpdate = Update_Dead;  // FixedUpdate에서 실행될 델리게이트 변경
                         break;
                     default:
@@ -212,6 +229,9 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
         // 컴포넌트 찾기
         anim = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
+        bodyCollider = GetComponent<SphereCollider>();
+        rigid = GetComponent<Rigidbody>();
+        dieEffect = GetComponentInChildren<ParticleSystem>();
     }
 
     private void Start()
@@ -398,7 +418,69 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
     {
         State = EnemyState.Dead;
         onDie?.Invoke();
+
+        MakeDropItem();
     }
+
+    /// <summary>
+    /// 아이템 드랍 함수
+    /// </summary>
+    void MakeDropItem()
+    {
+        float percentage = UnityEngine.Random.Range(0.0f, 1.0f);    // 드랍할 아이템을 결정하기 위한 랜덤 숫자 가져오기
+        int index = 0;  // 드랍할 (내가 가지고 있는) 아이템의 인덱스
+        float max = 0;  // 가장 드랍할 확율이 높은 아이템을 찾기 위한 임시값
+        for (int i = 0; i < dropItems.Length; i++)
+        {
+            if( max < dropItems[i].dropPercentage )
+            {
+                max = dropItems[i].dropPercentage;  // 가장 드랍 확율이 높은 아이템 찾기
+                index = i;                          // index의 디폴트 값은 가장 드랍 확율이 높은 아이템
+            }
+        }
+
+        float checkPercentage = 0.0f;               // 아이템의 드랍 확율을 누적하는 임시 값
+        for(int i=0;i<dropItems.Length;i++)
+        {
+            checkPercentage += dropItems[i].dropPercentage; // checkPercentage를 단계별로 계속 누적 시킴
+            
+            // checkPercentage와 percentage 비교 (랜덤 숫자가 누적된 확율보다 낮은지 확인, 낮으면 해당 아이템 생성)
+            if ( percentage <= checkPercentage)    
+            {
+                index = i;  // 생성할 아이템 결정
+                break;      // for문 종료
+            }
+        }
+
+        GameObject obj = ItemFactory.MakeItem(dropItems[index].id, transform.position, true); // 선택된 아이템 생성        
+    }
+
+    /// <summary>
+    /// 사망 연출용 코루틴
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator DeadRepresent()
+    {
+        // 바닥에 이팩트 처리
+        dieEffect.Play();                   // 이팩트 재생
+        dieEffect.transform.parent = null;  // 부모자식 관계 끊기
+        Enemy_HP_Bar hpBar = GetComponentInChildren<Enemy_HP_Bar>();
+        Destroy(hpBar.gameObject);          // HP바 제거
+
+        yield return new WaitForSeconds(1.5f);  // 슬라임 사망 애니메이션이 1.33초라 그 이후에 떨어짐
+
+        // 바닥 아래로 떨어트리기
+        agent.enabled = false;          // 네브메시 에이전트 컴포넌트를 끄기
+        bodyCollider.enabled = false;   // 컬라이더 컴포넌트 끄기
+        rigid.isKinematic = false;      // 키네마틱 끄기
+        rigid.drag = 10.0f;             // 마찰력은 천천히 떨어질 정도로
+
+        yield return new WaitForSeconds(1.5f);  // 1.5초 뒤에
+        // 삭제 처리
+        Destroy(dieEffect.gameObject);  // 이팩트 삭제
+        Destroy(this.gameObject);       // 적도 삭제
+    }
+
 
     public void Test()
     {
@@ -440,6 +522,31 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
         Handles.DrawWireArc(transform.position, transform.up, q1 * forward, sightHalfAngle * 2, sightRange, 5.0f);  // 호 그리기
 #endif
     }
+
+#if UNITY_EDITOR
+    /// <summary>
+    /// 인스펙터 창에서 성공적으로 값이 변경되었을 때 실행
+    /// </summary>
+    private void OnValidate()
+    {
+        if (State != EnemyState.Dead)
+        {
+            // 드랍 아이템의 드랍 확률의 합을 1로 만들기
+            float total = 0.0f;
+            foreach (var item in dropItems)
+            {
+                total += item.dropPercentage;   // 전체 합 구하기
+            }
+
+            for (int i = 0; i < dropItems.Length; i++)
+            {
+                dropItems[i].dropPercentage /= total;   // 전체 합으로 나누어서 최종합을 1로 만들기
+            }
+        }
+    }
+    
+    
+#endif
 
 
 }

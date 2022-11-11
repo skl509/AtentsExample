@@ -3,6 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 public class Player : MonoBehaviour, IBattle, IHealth
 {
     /// <summary>
@@ -25,10 +29,18 @@ public class Player : MonoBehaviour, IBattle, IHealth
     /// </summary>
     Collider weaponBlade;
 
+    Animator anim;  // 애니메이터 컴포넌트
+
     public float attackPower = 10.0f;      // 공격력
     public float defencePower = 3.0f;      // 방어력
     public float maxHP = 100.0f;    // 최대 HP
     float hp = 100.0f;              // 현재 HP
+    bool isAlive = true;            // 살았는지 죽었는지 확인용
+
+
+    Inventory inven;
+
+    public float itemPickupRange = 2.0f; 
 
     // 프로퍼티 ------------------------------------------------------------------------------------
     public float AttackPower => attackPower;
@@ -40,7 +52,7 @@ public class Player : MonoBehaviour, IBattle, IHealth
         get => hp;
         set
         {
-            if (hp != value)
+            if (isAlive && hp != value) // 살아있고 HP가 변경되었을 때만 실행
             {
                 hp = value;
 
@@ -56,8 +68,9 @@ public class Player : MonoBehaviour, IBattle, IHealth
         }
     }
 
+    // 프로퍼티 ------------------------------------------------------------------------------------
     public float MaxHP => maxHP;
-    // --------------------------------------------------------------------------------------------
+    public bool IsAlive => isAlive;
 
     // 델리게이트 ----------------------------------------------------------------------------------
     public Action<float> onHealthChange { get; set; }
@@ -65,18 +78,24 @@ public class Player : MonoBehaviour, IBattle, IHealth
     // --------------------------------------------------------------------------------------------
 
     private void Awake()
-    {        
+    {
+        anim = GetComponent<Animator>();
+
         weapon_r = GetComponentInChildren<WeaponPosition>().transform;  // 무기가 붙는 위치를 컴포넌트의 타입으로 찾기
         weapon_l = GetComponentInChildren<ShildPosition>().transform;   // 방패가 붙는 위치를 컴포넌트의 타입으로 찾기
 
         // 장비교체가 일어나면 새로 설정해야 한다.
         weaponPS = weapon_r.GetComponentInChildren<ParticleSystem>();   // 무기에 붙어있는 파티클 시스템 가져오기
-        weaponBlade = weapon_r.GetComponentInChildren<Collider>();      // 무기의 충돌 영역 가져오기
+        weaponBlade = weapon_r.GetComponentInChildren<Collider>();      // 무기의 충돌 영역 가져오기                
     }
 
     private void Start()
     {
         hp = maxHP;
+        isAlive = true;
+
+        inven = new Inventory(this);
+        GameManager.Inst.InvenUI.InitializeInventory(inven);
     }
 
     /// <summary>
@@ -145,8 +164,11 @@ public class Player : MonoBehaviour, IBattle, IHealth
     /// <param name="damage">현재 입은 데미지</param>
     public void Defence(float damage)
     {
-        // 기본 공식 : 실제 입는 데미지 = 적 공격 데미지 - 방어력
-        HP -= (damage - DefencePower);
+        if (isAlive)                // 살아있을 때만 데미지 입음.
+        {
+            anim.SetTrigger("Hit"); // 피격 애니메이션 재생            
+            HP -= (damage - DefencePower);  // 기본 공식 : 실제 입는 데미지 = 적 공격 데미지 - 방어력
+        }
     }
 
     /// <summary>
@@ -154,6 +176,37 @@ public class Player : MonoBehaviour, IBattle, IHealth
     /// </summary>
     public void Die()
     {
+        isAlive = false;
+        ShowWeaponAndSheild(true);
+        anim.SetLayerWeight(1, 0.0f);       // 애니메이션 레이어 가중치 제거
+        anim.SetBool("IsAlive", isAlive);   // 죽었다고 표시해서 사망 애니메이션 재생
         onDie?.Invoke();
     }
+
+    /// <summary>
+    /// 플레이어 주변의 아이템을 획득하는 함수
+    /// </summary>
+    public void ItemPickup()
+    {
+        Collider[] items = Physics.OverlapSphere(transform.position, itemPickupRange, LayerMask.GetMask("Item"));
+
+        foreach(var itemCollider in items)
+        {
+            Item item = itemCollider.gameObject.GetComponent<Item>();
+
+            if( inven.AddItem(item.data) )  // 추가가 성공하면
+            {
+                Destroy(itemCollider.gameObject);   // 아이템 오브젝트 삭제하기
+            }
+        }
+    }
+
+#if UNITY_EDITOR
+    private void OnDrawGizmos()
+    {
+        Handles.DrawWireDisc(transform.position, transform.up, itemPickupRange);
+    }
+#endif
+
+
 }
