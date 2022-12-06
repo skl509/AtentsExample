@@ -16,6 +16,9 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     ItemDataManager itemData;
 
+    /// <summary>
+    /// 인벤토리 UI
+    /// </summary>
     InventoryUI inventoryUI;
 
 
@@ -40,8 +43,9 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     protected override void Initialize()
     {
-        itemData = GetComponent<ItemDataManager>();
+        base.Initialize();
 
+        itemData = GetComponent<ItemDataManager>();
         player = FindObjectOfType<Player>();
         inventoryUI = FindObjectOfType<InventoryUI>();
     }

@@ -36,9 +36,33 @@ public class InventoryUI : MonoBehaviour
     ItemSpliterUI spliter;
 
     /// <summary>
+    /// 보유 금액 표시 창
+    /// </summary>
+    MoneyPanelUI moneyPanel;
+
+    /// <summary>
+    /// 인벤토리 창 닫기용 버튼
+    /// </summary>
+    Button closeButton;
+
+    /// <summary>
     /// 입력 처리용 인풋 액션 클래스
     /// </summary>
     PlayerInputActions inputActions;
+
+    /// <summary>
+    /// 인벤토리 창 열고 닫기 위한 캔버스 그룹
+    /// </summary>
+    CanvasGroup canvasGroup;
+
+    /// <summary>
+    /// 인벤토리에서 인벤토리를 소유한 플레이어를 가져와 확인 시켜주는 프로퍼티
+    /// </summary>
+    public Player Owner => inven.Owner;
+
+    public Action onInventoryOpen;
+    public Action onInventoryClose;
+
 
     private void Awake()
     {
@@ -56,6 +80,13 @@ public class InventoryUI : MonoBehaviour
         spliter = GetComponentInChildren<ItemSpliterUI>();
         spliter.onOKClick += OnSplitOK;     // 스플리터가 가지고 있는 onOKClick 델리게이트에 함수 등록
 
+        moneyPanel = GetComponentInChildren<MoneyPanelUI>();
+
+        closeButton = transform.GetChild(5).GetComponent<Button>();
+        closeButton.onClick.AddListener(Close);
+
+        canvasGroup = GetComponent<CanvasGroup>();
+
         inputActions = new PlayerInputActions();
     }
 
@@ -64,6 +95,7 @@ public class InventoryUI : MonoBehaviour
         inputActions.UI.Enable();
         inputActions.UI.Click.performed += spliter.OnMouseClick;
         inputActions.UI.Click.canceled += tempSlotUI.OnDrop;
+        inputActions.UI.InventoryOnOff.performed += InventoryShortCut;
     }
 
     private void OnDisable()
@@ -119,7 +151,7 @@ public class InventoryUI : MonoBehaviour
             slotUIs[i].onDragStart += OnItemMoveStart;              // 슬롯에서 드래그가 시작될 때 실행될 함수 연결
             slotUIs[i].onDragEnd += OnItemMoveEnd;                  // 슬롯에서 드래그가 끝날 때 실행될 함수 연결
             slotUIs[i].onDragCancel += OnItemMoveCancel;            // 드래그가 실패했을 때 실행될 함수 연결
-            slotUIs[i].onClick += OnItemMoveEnd;                    // 클릭을 했을 때 실행될 함수 연결
+            slotUIs[i].onClick += OnClick;                          // 클릭을 했을 때 실행될 함수 연결
             slotUIs[i].onShiftClick += OnItemSplit;                 // 쉬프트 클릭을 했을 때 실행될 함수 연결
             slotUIs[i].onPoinerEnter += OnItemDetailOn;             // 마우스가 들어갔을 때 실행될 함수 연결
             slotUIs[i].onPoinerExit += OnItemDetailOff;             // 마우스가 나갔을 때 실행될 함수 연결
@@ -130,6 +162,85 @@ public class InventoryUI : MonoBehaviour
         tempSlotUI.InitializeSlot(Inventory.TempSlotIndex, inven.TempSlot); // 임시 슬롯 초기화
         tempSlotUI.onTempSlotOpenClose += OnDetailPause;
         tempSlotUI.Close(); // 기본적으로 닫아 놓기
+
+        // 특정 파트의 아이템이 해제되었을 때 실행될 델리게이트에 함수 연결
+        Owner.onEquipItemClear += OnEquipPartClear;
+
+        // 돈이 변경되면 moneyPanel도 갱신되게 변경
+        Owner.onMoneyChange += moneyPanel.Refresh;
+        moneyPanel.Refresh(Owner.Money);
+
+        // 일단 닫아 놓기
+        Close();
+    }
+
+    /// <summary>
+    /// 인벤토리 열기
+    /// </summary>
+    public void Open()
+    {
+        canvasGroup.alpha = 1;
+        canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
+        onInventoryOpen?.Invoke();
+    }
+
+    /// <summary>
+    /// 인벤토리 닫기
+    /// </summary>
+    public void Close()
+    {
+        canvasGroup.blocksRaycasts = false; // 레이케스트가 작동이 안되게 만들어서 클릭이 안되게 만들기
+        canvasGroup.interactable = false;
+        canvasGroup.alpha = 0;
+        onInventoryClose?.Invoke();
+    }
+
+    /// <summary>
+    /// 인벤토리 열고 닫는 단축키용 함수
+    /// </summary>
+    /// <param name="_"></param>
+    private void InventoryShortCut(InputAction.CallbackContext _)
+    {
+        if (canvasGroup.interactable)  // 인벤토리가 열려있는지 닫혀있는지 확인
+        {
+            Close();    // 열려 있으면 닫고
+        }
+        else
+        {
+            Open();     // 닫혀 있으면 연다.
+        }
+    }
+
+    /// <summary>
+    /// 특정한 파트에 장착되는 아이템은 모두 장착해제로 표시
+    /// </summary>
+    /// <param name="part">장착 해제 표시할 파트</param>
+    private void OnEquipPartClear(EquipPartType part)
+    {
+        foreach(var slotUI in slotUIs)      // 모든 슬롯을 돌면서
+        {
+            ItemData_EquipItem equipItem = slotUI.ItemSlot.ItemData as ItemData_EquipItem;
+            if(equipItem != null && equipItem.EquipPart == part)    // 같은 종류의 파츠면
+            {
+                slotUI.ClearEquipMark();    // 장착 해제
+            }
+        }
+    }
+
+    /// <summary>
+    /// 확인할 스크린 좌표가 인벤토리 영역 안인지 확인하는 함수
+    /// </summary>
+    /// <param name="screenPos">확인할 스크린 좌표</param>
+    /// <returns>인벤토리 영역 안에 있으면 true, 아니면 false</returns>
+    public bool IsInInventoryArea(Vector2 screenPos)
+    {
+        RectTransform rectTransform = (RectTransform)transform;
+
+        Vector2 min = new(rectTransform.position.x - rectTransform.sizeDelta.x, rectTransform.position.y);
+        Vector2 max = new(rectTransform.position.x, rectTransform.position.y + rectTransform.sizeDelta.y);
+
+        return (min.x<screenPos.x && screenPos.x<max.x && min.y < screenPos.y && screenPos.y < max.y);  // min, max 사이에 있는지 확인
     }
 
     /// <summary>
@@ -150,6 +261,25 @@ public class InventoryUI : MonoBehaviour
     {
         OnItemMoveCancel(slotID);
         detail.Open(inven[slotID].ItemData);
+    }
+
+    /// <summary>
+    /// 마우스가 슬롯에서 클릭이 되었을 때 실행될 함수
+    /// </summary>
+    /// <param name="slotID">클릭된 슬롯의 ID</param>
+    private void OnClick(uint slotID)
+    {
+        if( tempSlotUI.ItemSlot.IsEmpty )
+        {
+            // 아이템을 사용할 용도
+            ItemSlot useItemSlot = inven[slotID];
+            useItemSlot.UseSlotItem(Owner.gameObject);
+        }
+        else
+        {
+            // 임시 슬롯의 아이템을 slotID 슬롯에 넣을 용도
+            OnItemMoveEnd(slotID);
+        }
     }
 
     /// <summary>

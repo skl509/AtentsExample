@@ -62,6 +62,15 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LockOn"",
+                    ""type"": ""Button"",
+                    ""id"": ""63ea4e54-c4a8-432b-bd5d-ec19f878bda5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -161,6 +170,28 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""KM"",
                     ""action"": ""Pickup"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9c4f0431-78c5-466a-b277-45478f017980"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KM"",
+                    ""action"": ""LockOn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""138c56f2-2a4a-4b95-b0b3-1b41e234c32a"",
+                    ""path"": ""<Mouse>/middleButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KM"",
+                    ""action"": ""LockOn"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -295,6 +326,15 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""InventoryOnOff"",
+                    ""type"": ""Button"",
+                    ""id"": ""29362c5e-df16-4583-857f-7caf806aabc9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -317,6 +357,45 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""KM"",
                     ""action"": ""Wheel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dcd69079-c4e9-43a0-945f-910241835253"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KM"",
+                    ""action"": ""InventoryOnOff"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Effect"",
+            ""id"": ""4b7b2c5b-4a69-4e79-be89-3a85bb0c4b26"",
+            ""actions"": [
+                {
+                    ""name"": ""CursorMove"",
+                    ""type"": ""Value"",
+                    ""id"": ""523bdabd-c758-4907-a20c-de6c6061b288"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""962d241f-61b7-49a8-a1ce-98c69131313a"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KM"",
+                    ""action"": ""CursorMove"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -348,6 +427,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_Player_MoveModeChange = m_Player.FindAction("MoveModeChange", throwIfNotFound: true);
         m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
         m_Player_Pickup = m_Player.FindAction("Pickup", throwIfNotFound: true);
+        m_Player_LockOn = m_Player.FindAction("LockOn", throwIfNotFound: true);
         // Test
         m_Test = asset.FindActionMap("Test", throwIfNotFound: true);
         m_Test_Test1 = m_Test.FindAction("Test1", throwIfNotFound: true);
@@ -359,6 +439,10 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Click = m_UI.FindAction("Click", throwIfNotFound: true);
         m_UI_Wheel = m_UI.FindAction("Wheel", throwIfNotFound: true);
+        m_UI_InventoryOnOff = m_UI.FindAction("InventoryOnOff", throwIfNotFound: true);
+        // Effect
+        m_Effect = asset.FindActionMap("Effect", throwIfNotFound: true);
+        m_Effect_CursorMove = m_Effect.FindAction("CursorMove", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -422,6 +506,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_MoveModeChange;
     private readonly InputAction m_Player_Attack;
     private readonly InputAction m_Player_Pickup;
+    private readonly InputAction m_Player_LockOn;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -430,6 +515,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         public InputAction @MoveModeChange => m_Wrapper.m_Player_MoveModeChange;
         public InputAction @Attack => m_Wrapper.m_Player_Attack;
         public InputAction @Pickup => m_Wrapper.m_Player_Pickup;
+        public InputAction @LockOn => m_Wrapper.m_Player_LockOn;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -451,6 +537,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Pickup.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPickup;
                 @Pickup.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPickup;
                 @Pickup.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPickup;
+                @LockOn.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLockOn;
+                @LockOn.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLockOn;
+                @LockOn.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLockOn;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -467,6 +556,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Pickup.started += instance.OnPickup;
                 @Pickup.performed += instance.OnPickup;
                 @Pickup.canceled += instance.OnPickup;
+                @LockOn.started += instance.OnLockOn;
+                @LockOn.performed += instance.OnLockOn;
+                @LockOn.canceled += instance.OnLockOn;
             }
         }
     }
@@ -542,12 +634,14 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private IUIActions m_UIActionsCallbackInterface;
     private readonly InputAction m_UI_Click;
     private readonly InputAction m_UI_Wheel;
+    private readonly InputAction m_UI_InventoryOnOff;
     public struct UIActions
     {
         private @PlayerInputActions m_Wrapper;
         public UIActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Click => m_Wrapper.m_UI_Click;
         public InputAction @Wheel => m_Wrapper.m_UI_Wheel;
+        public InputAction @InventoryOnOff => m_Wrapper.m_UI_InventoryOnOff;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -563,6 +657,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Wheel.started -= m_Wrapper.m_UIActionsCallbackInterface.OnWheel;
                 @Wheel.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnWheel;
                 @Wheel.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnWheel;
+                @InventoryOnOff.started -= m_Wrapper.m_UIActionsCallbackInterface.OnInventoryOnOff;
+                @InventoryOnOff.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnInventoryOnOff;
+                @InventoryOnOff.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnInventoryOnOff;
             }
             m_Wrapper.m_UIActionsCallbackInterface = instance;
             if (instance != null)
@@ -573,10 +670,46 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Wheel.started += instance.OnWheel;
                 @Wheel.performed += instance.OnWheel;
                 @Wheel.canceled += instance.OnWheel;
+                @InventoryOnOff.started += instance.OnInventoryOnOff;
+                @InventoryOnOff.performed += instance.OnInventoryOnOff;
+                @InventoryOnOff.canceled += instance.OnInventoryOnOff;
             }
         }
     }
     public UIActions @UI => new UIActions(this);
+
+    // Effect
+    private readonly InputActionMap m_Effect;
+    private IEffectActions m_EffectActionsCallbackInterface;
+    private readonly InputAction m_Effect_CursorMove;
+    public struct EffectActions
+    {
+        private @PlayerInputActions m_Wrapper;
+        public EffectActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @CursorMove => m_Wrapper.m_Effect_CursorMove;
+        public InputActionMap Get() { return m_Wrapper.m_Effect; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(EffectActions set) { return set.Get(); }
+        public void SetCallbacks(IEffectActions instance)
+        {
+            if (m_Wrapper.m_EffectActionsCallbackInterface != null)
+            {
+                @CursorMove.started -= m_Wrapper.m_EffectActionsCallbackInterface.OnCursorMove;
+                @CursorMove.performed -= m_Wrapper.m_EffectActionsCallbackInterface.OnCursorMove;
+                @CursorMove.canceled -= m_Wrapper.m_EffectActionsCallbackInterface.OnCursorMove;
+            }
+            m_Wrapper.m_EffectActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @CursorMove.started += instance.OnCursorMove;
+                @CursorMove.performed += instance.OnCursorMove;
+                @CursorMove.canceled += instance.OnCursorMove;
+            }
+        }
+    }
+    public EffectActions @Effect => new EffectActions(this);
     private int m_KMSchemeIndex = -1;
     public InputControlScheme KMScheme
     {
@@ -592,6 +725,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         void OnMoveModeChange(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
         void OnPickup(InputAction.CallbackContext context);
+        void OnLockOn(InputAction.CallbackContext context);
     }
     public interface ITestActions
     {
@@ -605,5 +739,10 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     {
         void OnClick(InputAction.CallbackContext context);
         void OnWheel(InputAction.CallbackContext context);
+        void OnInventoryOnOff(InputAction.CallbackContext context);
+    }
+    public interface IEffectActions
+    {
+        void OnCursorMove(InputAction.CallbackContext context);
     }
 }

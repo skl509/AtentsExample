@@ -152,7 +152,7 @@ public class ItemSpliterUI : MonoBehaviour, IScrollHandler
     private bool IsAreaInside(Vector2 screenPos)
     {
         RectTransform rectTransform = (RectTransform)transform;
-        float halfWidth = rectTransform.rect.width * 0.5f; // 피벗개념 이용해야 최대범위 최소범위 상정할 수 있다...
+        float halfWidth = rectTransform.rect.width * 0.5f;
 
         // 아이템 분리기 영역의 왼쪽 아래(min)와 오른쪽위(max)를 계산하기. 아이템 분리기의 pivot이 아래쪽 가운데에 있어서 이렇게 계산
         Vector2 min = new Vector2(rectTransform.position.x - halfWidth, rectTransform.position.y);
